@@ -7,6 +7,8 @@ import { userLoggedOut } from '../../features/auth/authSlice';
 const LoginForm = () => {
     // integration or RTK Query hooks here
     const [login, { isSuccess, isError, isLoading }] = useLoginMutation();
+
+    // integration of react-redux hooks here
     const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
@@ -91,7 +93,7 @@ const LoginForm = () => {
 
             <div>
                 <button type='submit'
-                    className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500' disabled={isLoading}>
+                    className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-80 disabled:cursor-not-allowed' disabled={isLoading}>
                     Sign in
                 </button>
             </div>

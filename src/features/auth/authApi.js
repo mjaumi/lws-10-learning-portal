@@ -32,9 +32,18 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        //POST mutation to register new user into the server
+        register: builder.mutation({
+            query: data => ({
+                url: '/register',
+                method: 'POST',
+                body: data,
+            }),
+        }),
     }),
 });
 
 export const {
     useLoginMutation,
+    useRegisterMutation,
 } = authApi;
