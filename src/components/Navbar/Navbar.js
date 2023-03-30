@@ -17,7 +17,12 @@ const Navbar = () => {
     const logOutHandler = () => {
         localStorage.clear();
         dispatch(userLoggedOut());
-        navigate('/');
+
+        if (location.pathname.includes('admin')) {
+            navigate('/admin');
+        } else {
+            navigate('/');
+        }
     }
 
     // rendering the student navbar component here
@@ -36,6 +41,7 @@ const Navbar = () => {
                     {
                         location.pathname.includes('admin') ?
                             <button
+                                onClick={logOutHandler}
                                 className='flex gap-2 items-center px-4 py-1 rounded-full text-sm transition-all bg-red-600 hover:bg-red-700 font-medium'>
                                 <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5'
                                     stroke='currentColor' className='w-6 h-6'>

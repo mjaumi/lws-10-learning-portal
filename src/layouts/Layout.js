@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     return (
         <>
             <Navbar />
-            <section className='py-6 bg-primary'>
+            <section className='py-6 bg-primary h-[calc(100vh_-_64px)]'>
                 {children}
             </section>
         </>
