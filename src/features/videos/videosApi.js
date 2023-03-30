@@ -14,7 +14,7 @@ export const videosApi = apiSlice.injectEndpoints({
                 body: data,
             }),
 
-            // updating videos in store pessimistically after adding a new video 
+            // updating videos in redux store pessimistically after adding a new video
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 const video = await queryFulfilled;
 
@@ -29,10 +29,35 @@ export const videosApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // DELETE mutation for deleting videos from the server
+        deleteVideo: builder.mutation({
+            query: videoId => ({
+                url: `/videos/${videoId}`,
+                method: 'DELETE',
+            }),
+
+            // updating videos in redux store optimistically when the video is deleted
+            async onQueryStarted(videoId, { queryFulfilled, dispatch }) {
+                let deleteResult = dispatch(
+                    apiSlice.util.updateQueryData('getVideos', undefined,
+                        draftVideos => {
+                            const deletedVideoIndex = draftVideos.findIndex(v => v.id === videoId);
+
+                            console.log(deletedVideoIndex);
+                            draftVideos.splice(deletedVideoIndex, 1);
+                        })
+                );
+
+                await queryFulfilled.catch(() => {
+                    deleteResult.undo();
+                });
+            }
+        })
     }),
 });
 
 export const {
     useGetVideosQuery,
     useAddVideoMutation,
+    useDeleteVideoMutation,
 } = videosApi;

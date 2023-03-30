@@ -15,9 +15,7 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
     const [views, setViews] = useState('');
     const [description, setDescription] = useState('');
 
-    console.log(moment().format('YYYY-MM-DDTHH:mm:ss.ms'));
-
-    // informing and navigating user based on registration success or error here
+    // informing and navigating user based on video add success or error here
     useEffect(() => {
         if (isSuccess) {
             console.log('Video Added Successfully!!.');

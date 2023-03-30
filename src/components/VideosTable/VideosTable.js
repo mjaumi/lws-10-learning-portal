@@ -37,6 +37,7 @@ const VideosTable = () => {
                     {
                         videos.map(video => <VideosTableRow
                             key={video.id}
+                            videoId={video.id}
                             title={video.title}
                             description={video.description}
                         />)
