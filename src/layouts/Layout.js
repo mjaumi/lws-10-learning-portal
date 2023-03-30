@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar/Navbar';
 
 const Layout = ({ children }) => {
 
-    // defining the webpage layout here
+    // defining the student webpages layout here
     return (
         <>
             <Navbar />
