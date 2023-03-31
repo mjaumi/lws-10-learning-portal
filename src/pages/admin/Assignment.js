@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AssignmentTable from '../../components/AssignmentTable/AssignmentTable';
 import AssignmentModal from '../../components/Modals/AssignmentModal';
+import { MdAssignmentAdd } from 'react-icons/md';
 import Layout from '../../layouts/Layout';
 
 const Assignment = () => {
@@ -14,7 +15,7 @@ const Assignment = () => {
                 <div className='px-3 py-20 bg-opacity-10'>
                     <div className='w-full flex'>
                         <button onClick={() => setIsModalOpen(true)} className='btn btn-sm btn-secondary border-2 border-secondary px-6 rounded-full text-black font-medium ml-auto hover:bg-primary hover:text-white duration-300 flex items-center capitalize'>
-
+                            <MdAssignmentAdd className='mr-2' />
                             Add Assignment
                         </button>
                     </div>

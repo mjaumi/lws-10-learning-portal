@@ -1,5 +1,6 @@
 import { apiSlice } from '../api/apiSlice';
 
+// initializing the assignment mark APIs here
 export const assignmentMarkApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
         // GET query to get all the assignment mark from the server
