@@ -1,4 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
+import { addAssignmentToEdit } from './assignmentSlice';
 
 // initializing the assignments APIs here
 export const assignmentsApi = apiSlice.injectEndpoints({
@@ -6,6 +7,19 @@ export const assignmentsApi = apiSlice.injectEndpoints({
         // GET query to get all the assignments from the server
         getAssignments: builder.query({
             query: () => '/assignments',
+        }),
+        // GET query to get a single assignment from the server
+        getAssignment: builder.query({
+            query: assignmentId => `/assignments/${assignmentId}`,
+
+            // getting single assignment to redux store here 
+            async onQueryStarted(assignmentId, { queryFulfilled, dispatch }) {
+                const assignmentToEdit = await queryFulfilled;
+
+                if (assignmentToEdit?.data?.id) {
+                    dispatch(addAssignmentToEdit(assignmentToEdit.data));
+                }
+            }
         }),
         // POST mutation to add new assignment in the server
         addAssignment: builder.mutation({
@@ -50,12 +64,36 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                     deleteResult.undo();
                 })
             }
+        }),
+        editAssignment: builder.mutation({
+            query: ({ assignmentId, data }) => ({
+                url: `/assignments/${assignmentId}`,
+                method: 'PATCH',
+                body: data,
+            }),
+
+            // updating assignments on redux store pessimistically after editing an assignment
+            async onQueryStarted({ assignmentId }, { queryFulfilled, dispatch }) {
+                const editedAssignment = await queryFulfilled;
+
+                if (editedAssignment?.data?.id) {
+                    dispatch(apiSlice.util.updateQueryData('getAssignments', undefined,
+                        draftAssignments => {
+                            const editedAssignmentIndex = draftAssignments.findIndex(a => a.id === assignmentId);
+
+                            draftAssignments.splice(editedAssignmentIndex, 1, editedAssignment.data);
+                        })
+                    );
+                }
+            }
         })
     }),
 });
 
 export const {
     useGetAssignmentsQuery,
+    useLazyGetAssignmentQuery,
     useAddAssignmentMutation,
     useDeleteAssignmentMutation,
+    useEditAssignmentMutation,
 } = assignmentsApi;
