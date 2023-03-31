@@ -1,6 +1,7 @@
 import { apiSlice } from '../api/apiSlice';
 import { getVideoToEdit } from './videoSlice';
 
+// initializing the videos APIs here
 export const videosApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
         // GET query to get videos from server
