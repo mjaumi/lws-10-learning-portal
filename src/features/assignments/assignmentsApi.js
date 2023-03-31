@@ -28,10 +28,34 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // DELETE mutation to delete an assignment from the server
+        deleteAssignment: builder.mutation({
+            query: assignmentId => ({
+                url: `/assignments/${assignmentId}`,
+                method: 'DELETE',
+            }),
+
+            // updating assignments on redux store optimistically while deleting an assignment
+            async onQueryStarted(assignmentId, { queryFulfilled, dispatch }) {
+                const deleteResult = dispatch(
+                    apiSlice.util.updateQueryData('getAssignments', undefined,
+                        draftAssignments => {
+                            const deletedAssignmentIndex = draftAssignments.findIndex(a => a.id === assignmentId);
+
+                            draftAssignments.splice(deletedAssignmentIndex, 1);
+                        })
+                );
+
+                await queryFulfilled.catch(() => {
+                    deleteResult.undo();
+                })
+            }
+        })
     }),
 });
 
 export const {
     useGetAssignmentsQuery,
     useAddAssignmentMutation,
+    useDeleteAssignmentMutation,
 } = assignmentsApi;

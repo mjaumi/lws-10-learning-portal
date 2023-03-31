@@ -37,6 +37,7 @@ const AssignmentTable = () => {
                     {
                         assignments.map(assignment => <AssignmentTableRow
                             key={assignment.id}
+                            assignmentId={assignment.id}
                             title={assignment.title}
                             videoTitle={assignment.video_title}
                             marks={assignment.totalMark}

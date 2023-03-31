@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDeleteAssignmentMutation } from '../../features/assignments/assignmentsApi';
 
-const AssignmentTableRow = ({ title, videoTitle, marks }) => {
+const AssignmentTableRow = ({ assignmentId, title, videoTitle, marks }) => {
+    // integration of RTK Query hooks here
+    const [deleteAssignment, { isLoading, isError, isSuccess }] = useDeleteAssignmentMutation();
+
+    // informing and navigating user based on video delete success or error here
+    useEffect(() => {
+        if (isSuccess) {
+            console.log('Assignment Deleted Successfully!!.');
+        }
+
+        if (isError) {
+            console.log('Failed To Delete The Assignment!!');
+        }
+    }, [isSuccess, isError]);
+
+    // handler function to handle delete assignment
+    const deleteAssignmentHandler = () => {
+        deleteAssignment(assignmentId);
+    }
 
     // rendering assignment table row component here
     return (
@@ -9,7 +28,7 @@ const AssignmentTableRow = ({ title, videoTitle, marks }) => {
             <td className='table-td'>{videoTitle}</td>
             <td className='table-td'>{marks}</td>
             <td className='table-td flex gap-x-2 justify-center'>
-                <button className='disabled:opacity-80 disabled:cursor-not-allowed'>
+                <button onClick={deleteAssignmentHandler} className='disabled:opacity-80 disabled:cursor-not-allowed' disabled={isLoading}>
                     <svg fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor'
                         className='w-6 h-6 hover:text-accent cursor-pointer transition-all'>
                         <path strokeLinecap='round' strokeLinejoin='round'
