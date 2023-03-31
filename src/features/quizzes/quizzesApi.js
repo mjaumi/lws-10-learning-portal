@@ -1,4 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
+import { getDataToEdit } from '../edit/editSlice';
 
 // initializing the quizzes APIs here
 export const quizzesApi = apiSlice.injectEndpoints({
@@ -6,6 +7,18 @@ export const quizzesApi = apiSlice.injectEndpoints({
         // GET query to get all the quizzes from the server 
         getQuizzes: builder.query({
             query: () => '/quizzes',
+        }),
+        // GET query to get a single quiz from the server
+        getQuiz: builder.query({
+            query: quizId => `/quizzes/${quizId}`,
+
+            async onQueryStarted(quizId, { queryFulfilled, dispatch }) {
+                const quizToEdit = await queryFulfilled;
+
+                if (quizToEdit?.data?.id) {
+                    dispatch(getDataToEdit(quizToEdit.data));
+                }
+            }
         }),
         // POST mutation to add new quiz to the server
         addQuiz: builder.mutation({
@@ -51,11 +64,37 @@ export const quizzesApi = apiSlice.injectEndpoints({
                 });
             }
         }),
+        // PATCH mutation to updated quizzes after editing
+        editQuiz: builder.mutation({
+            query: ({ quizId, data }) => ({
+                url: `/quizzes/${quizId}`,
+                method: 'PATCH',
+                body: data,
+            }),
+
+            // updating quizzes on redux store pessimistically after editing a quiz
+            async onQueryStarted({ quizId }, { queryFulfilled, dispatch }) {
+                const editedQuiz = await queryFulfilled;
+
+                if (editedQuiz?.data?.id) {
+                    dispatch(
+                        apiSlice.util.updateQueryData('getQuizzes', undefined,
+                            draftQuizzes => {
+                                const editedQuizIndex = draftQuizzes.findIndex(q => q.id === quizId);
+
+                                draftQuizzes.splice(editedQuizIndex, 1, editedQuiz.data);
+                            })
+                    );
+                }
+            }
+        }),
     }),
 });
 
 export const {
     useGetQuizzesQuery,
+    useLazyGetQuizQuery,
     useAddQuizMutation,
     useDeleteQuizMutation,
+    useEditQuizMutation,
 } = quizzesApi;

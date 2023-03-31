@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { BsFillCloudUploadFill } from 'react-icons/bs';
 import { ImCancelCircle } from 'react-icons/im';
-import { useAddQuizMutation } from '../../features/quizzes/quizzesApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeDataFromEdit } from '../../features/edit/editSlice';
+import { useAddQuizMutation, useEditQuizMutation } from '../../features/quizzes/quizzesApi';
 import { useGetVideosQuery } from '../../features/videos/videosApi';
 
 const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
     // integration of RTK Query hooks here
     const [addQuiz, { isSuccess, isError, isLoading }] = useAddQuizMutation();
+    const [editQuiz, { isSuccess: isEditSuccess, isError: isEditError, isLoading: isEditLoading }] = useEditQuizMutation();
     const { data: videos } = useGetVideosQuery();
+
+    // integration or react-redux hooks here
+    const editThisQuiz = useSelector(state => state.editData.dataToEdit);
+    const dispatch = useDispatch();
+
+    // destructuring the edit quiz object here
+    const { id, question: quizQuestion, video_title, options: quizOptions } = editThisQuiz || {};
 
     // integration of react hooks here
     const [question, setQuestion] = useState('');
@@ -21,6 +31,24 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
     const [isQuizOption3Correct, setIsQuizOption3Correct] = useState(false);
     const [isQuizOption4Correct, setIsQuizOption4Correct] = useState(false);
 
+    // setting the modal input values with the existing quiz values here
+    useEffect(() => {
+        if (id) {
+            setIsModalOpen(true);
+
+            setQuestion(quizQuestion);
+            setVideoTitle(video_title);
+            setQuizOption1(quizOptions[0].option);
+            setQuizOption2(quizOptions[1].option);
+            setQuizOption3(quizOptions[2]?.option ? quizOptions[2].option : '');
+            setQuizOption4(quizOptions[3]?.option ? quizOptions[3].option : '');
+            setIsQuizOption1Correct(quizOptions[0].isCorrect);
+            setIsQuizOption2Correct(quizOptions[1].isCorrect);
+            setIsQuizOption3Correct(quizOptions[2]?.isCorrect ? quizOptions[2].isCorrect : false);
+            setIsQuizOption4Correct(quizOptions[3]?.isCorrect ? quizOptions[3].isCorrect : false);
+        }
+    }, [id, setIsModalOpen, video_title, quizQuestion, quizOptions]);
+
     // informing and navigating user based on quiz add success or error here
     useEffect(() => {
         if (isSuccess) {
@@ -32,6 +60,18 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
             console.log('Failed To Add New Quiz!!');
         }
     }, [isSuccess, isError, setIsModalOpen]);
+
+    // informing and navigating user based on quiz edit success or error here
+    useEffect(() => {
+        if (isEditSuccess) {
+            console.log('Quiz Edited Successfully!!.');
+            setIsModalOpen(false);
+        }
+
+        if (isEditError) {
+            console.log('Failed To Edit The Quiz!!');
+        }
+    }, [isEditSuccess, isEditError, setIsModalOpen]);
 
     // this function is resetting the form
     const resetForm = () => {
@@ -85,12 +125,25 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
                 );
             }
 
-            addQuiz({
-                question,
-                video_id: videos.find(video => video.title === videoTitle).id,
-                video_title: videoTitle,
-                options,
-            });
+            if (id) {
+                editQuiz({
+                    quizId: id,
+                    data: {
+                        question,
+                        video_id: videos.find(video => video.title === videoTitle).id,
+                        video_title: videoTitle,
+                        options,
+                    }
+                });
+            } else {
+                addQuiz({
+                    question,
+                    video_id: videos.find(video => video.title === videoTitle).id,
+                    video_title: videoTitle,
+                    options,
+                });
+            }
+
             resetForm();
         } else {
             console.log('Please, Select At Least 1 Correct Answer!!');
@@ -101,6 +154,10 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
     const modalCloseHandler = () => {
         setIsModalOpen(false);
         resetForm();
+
+        if (id) {
+            dispatch(removeDataFromEdit());
+        }
     }
 
     // rendering the quizzes modal component here
@@ -225,7 +282,7 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
                                 <ImCancelCircle className='mr-2' />
                                 Cancel
                             </button>
-                            <button type='submit' className='btn btn-sm btn-secondary border-2 border-secondary hover:bg-transparent hover:text-white rounded-full capitalize w-28 px-5 disabled:opacity-80 disabled:cursor-not-allowed' disabled={isLoading}>
+                            <button type='submit' className='btn btn-sm btn-secondary border-2 border-secondary hover:bg-transparent hover:text-white rounded-full capitalize w-28 px-5 disabled:opacity-80 disabled:cursor-not-allowed' disabled={isLoading || isEditLoading}>
                                 <BsFillCloudUploadFill className='mr-2' />
                                 Save
                             </button>
