@@ -6,7 +6,7 @@ const AssignmentTableRow = ({ assignmentId, title, videoTitle, marks }) => {
     const [deleteAssignment, { isLoading, isError, isSuccess }] = useDeleteAssignmentMutation();
     const [triggerGetAssignment, { isLoading: isEditLoading }] = useLazyGetAssignmentQuery();
 
-    // informing and navigating user based on video delete success or error here
+    // informing and navigating user based on assignment delete success or error here
     useEffect(() => {
         if (isSuccess) {
             console.log('Assignment Deleted Successfully!!.');

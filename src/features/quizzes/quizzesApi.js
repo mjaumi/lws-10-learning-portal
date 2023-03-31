@@ -28,10 +28,34 @@ export const quizzesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // DELETE mutation to delete a quiz from the server
+        deleteQuiz: builder.mutation({
+            query: quizId => ({
+                url: `/quizzes/${quizId}`,
+                method: 'DELETE',
+            }),
+
+            // updating quizzes in redux store optimistically when a quiz is deleted
+            async onQueryStarted(quizId, { queryFulfilled, dispatch }) {
+                const deleteQuizResult = dispatch(
+                    apiSlice.util.updateQueryData('getQuizzes', undefined,
+                        draftQuizzes => {
+                            const deletedQuizIndex = draftQuizzes.findIndex(q => q.id === quizId);
+
+                            draftQuizzes.splice(deletedQuizIndex, 1);
+                        })
+                );
+
+                await queryFulfilled.catch(() => {
+                    deleteQuizResult.undo();
+                });
+            }
+        }),
     }),
 });
 
 export const {
     useGetQuizzesQuery,
     useAddQuizMutation,
+    useDeleteQuizMutation,
 } = quizzesApi;

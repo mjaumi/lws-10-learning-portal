@@ -36,7 +36,7 @@ const QuizzesTable = () => {
                     {
                         quizzes.map(quiz => <QuizzesTableRow
                             key={quiz.id}
-                            id={quiz.id}
+                            quizId={quiz.id}
                             question={quiz.question}
                             videoTitle={quiz.video_title}
                         />)
