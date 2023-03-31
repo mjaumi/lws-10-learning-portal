@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { BsFillCloudUploadFill } from 'react-icons/bs';
 import { ImCancelCircle } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
+import { removeDataFromEdit } from '../../features/edit/editSlice';
 import { useAddVideoMutation, useEditVideoMutation } from '../../features/videos/videosApi';
-import { removeVideoFromEdit } from '../../features/videos/videoSlice';
 
 const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
     // integration or RTK Query hooks here
@@ -12,7 +12,7 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
     const [editVideo, { isSuccess: isEditSuccess, isError: isEditError, isLoading: isEditLoading }] = useEditVideoMutation();
 
     // integration of react-redux hooks here
-    const videoToEdit = useSelector(state => state.video.videoToEdit);
+    const videoToEdit = useSelector(state => state.editData.dataToEdit);
     const dispatch = useDispatch();
 
     // destructuring the video object here
@@ -87,6 +87,7 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
                     createdAt,
                 }
             });
+            dispatch(removeDataFromEdit());
         } else {
             addVideo({
                 title,
@@ -104,7 +105,7 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
         setIsModalOpen(false);
 
         if (videoToEdit?.id) {
-            dispatch(removeVideoFromEdit());
+            dispatch(removeDataFromEdit());
             resetForm();
         }
     }

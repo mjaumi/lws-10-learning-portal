@@ -135,6 +135,7 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
                         options,
                     }
                 });
+                dispatch(removeDataFromEdit());
             } else {
                 addQuiz({
                     question,
@@ -167,7 +168,7 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
             <div className={`modal modal-bottom sm:modal-middle bg-primary/60 ${isModalOpen && 'modal-open'}`}>
                 <div className='modal-box !max-w-5xl relative bg-primary border-2 border-secondary'>
                     <button onClick={modalCloseHandler} className='btn btn-sm btn-circle absolute right-2 top-2'>✕</button>
-                    <h3 className='font-bold text-lg text-center my-5 text-white'>Add New Quiz</h3>
+                    <h3 className='font-bold text-lg text-center my-5 text-white'>{id ? 'Edit Quiz' : 'Add New Quiz'}</h3>
                     <form onSubmit={quizFormHandler}>
                         <div className='form-control w-full text-secondary mb-4'>
                             <label className='label'>

@@ -3,7 +3,7 @@ import { BsFillCloudUploadFill } from 'react-icons/bs';
 import { ImCancelCircle } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAddAssignmentMutation, useEditAssignmentMutation } from '../../features/assignments/assignmentsApi';
-import { removeAssignmentFromEdit } from '../../features/assignments/assignmentSlice';
+import { removeDataFromEdit } from '../../features/edit/editSlice';
 import { useGetVideosQuery } from '../../features/videos/videosApi';
 
 const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
@@ -13,7 +13,7 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
     const { data: videos } = useGetVideosQuery();
 
     // integration of react-redux hooks here
-    const assignmentToEdit = useSelector(state => state.assignment.assignmentToEdit);
+    const assignmentToEdit = useSelector(state => state.editData.dataToEdit);
     const dispatch = useDispatch();
 
     // destructuring the assignment to edit object here
@@ -79,7 +79,8 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
                     video_title: videoTitle,
                     totalMark,
                 }
-            })
+            });
+            dispatch(removeDataFromEdit());
         } else {
             addAssignment({
                 title,
@@ -97,7 +98,7 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
         setIsModalOpen(false);
 
         if (id) {
-            dispatch(removeAssignmentFromEdit());
+            dispatch(removeDataFromEdit());
             resetForm();
         }
     }

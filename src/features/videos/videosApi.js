@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
-import { getVideoToEdit } from './videoSlice';
+import { getDataToEdit } from '../edit/editSlice';
 
 // initializing the videos APIs here
 export const videosApi = apiSlice.injectEndpoints({
@@ -16,7 +16,7 @@ export const videosApi = apiSlice.injectEndpoints({
                 const video = await queryFulfilled;
 
                 if (video?.data?.id) {
-                    dispatch(getVideoToEdit(video.data));
+                    dispatch(getDataToEdit(video.data));
                 }
             }
         }),

@@ -1,5 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
-import { addAssignmentToEdit } from './assignmentSlice';
+import { getDataToEdit } from '../edit/editSlice';
 
 // initializing the assignments APIs here
 export const assignmentsApi = apiSlice.injectEndpoints({
@@ -17,7 +17,7 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                 const assignmentToEdit = await queryFulfilled;
 
                 if (assignmentToEdit?.data?.id) {
-                    dispatch(addAssignmentToEdit(assignmentToEdit.data));
+                    dispatch(getDataToEdit(assignmentToEdit.data));
                 }
             }
         }),
