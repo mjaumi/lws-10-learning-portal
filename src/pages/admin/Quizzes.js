@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MdQuiz } from 'react-icons/md';
+import QuizzesModal from '../../components/Modals/QuizzesModal';
 import QuizzesTable from '../../components/QuizzesTable/QuizzesTable';
 import Layout from '../../layouts/Layout';
 
@@ -21,6 +22,10 @@ const Quizzes = () => {
                     <div className='overflow-x-auto mt-4'>
                         <QuizzesTable />
                     </div>
+                    <QuizzesModal
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                    />
                 </div>
             </div>
         </Layout>

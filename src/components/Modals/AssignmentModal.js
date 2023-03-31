@@ -88,6 +88,8 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
                 totalMark,
             });
         }
+
+        resetForm();
     }
 
     // handler function to handle modal close
