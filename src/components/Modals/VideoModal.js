@@ -5,6 +5,7 @@ import { ImCancelCircle } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeDataFromEdit } from '../../features/edit/editSlice';
 import { useAddVideoMutation, useEditVideoMutation } from '../../features/videos/videosApi';
+import { toast } from 'react-toastify';
 
 const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
     // integration or RTK Query hooks here
@@ -41,24 +42,24 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
     // informing and navigating user based on video add success or error here
     useEffect(() => {
         if (isSuccess) {
-            console.log('Video Added Successfully!!.');
+            toast.success('Video Added Successfully!!');
             setIsModalOpen(false);
         }
 
         if (isError) {
-            console.log('Failed To Add New Video!!');
+            toast.error('Failed To Add New Video!!');
         }
     }, [isSuccess, isError, setIsModalOpen]);
 
     // informing and navigating user based on video edit success or error here
     useEffect(() => {
         if (isEditSuccess) {
-            console.log('Video Edited Successfully!!.');
+            toast.success('Video Edited Successfully!!');
             setIsModalOpen(false);
         }
 
         if (isEditError) {
-            console.log('Failed To Edit The Video!!');
+            toast.error('Failed To Edit The Video!!');
         }
     }, [isEditSuccess, isEditError, setIsModalOpen]);
 

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../features/auth/authApi';
 import { userLoggedOut } from '../../features/auth/authSlice';
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
     // integration or RTK Query hooks here
@@ -26,26 +27,26 @@ const LoginForm = () => {
             if (isSuccess) {
                 if (location.pathname.includes('admin')) {
                     if (user.role === 'admin') {
-                        console.log('Login Successful!!');
+                        toast.success('Login Successful!!');
                         navigate('/admin/dashboard');
                     } else {
-                        console.log('Wrong Admin Credentials!!!');
+                        toast.error('Wrong Admin Credentials!!');
                         dispatch(userLoggedOut());
                         localStorage.clear();
                     }
                 } else {
                     if (user.role === 'student') {
-                        console.log('Login Successful!!');
+                        toast.success('Login Successful!!');
                         navigate('/course-player');
                     } else {
-                        console.log('Wrong Student Credentials!!!');
+                        toast.error('Wrong Student Credentials!!');
                         dispatch(userLoggedOut());
                         localStorage.clear();
                     }
                 }
             }
             if (isError) {
-                console.log('Login Failed!!');
+                toast.error('Login Failed!!');
             }
         }
     }, [dispatch, isError, isSuccess, navigate, user, location]);

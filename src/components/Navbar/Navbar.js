@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/image/learning-portal.svg';
 import { userLoggedOut } from '../../features/auth/authSlice';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
     // integration of react-redux hooks here
@@ -17,6 +18,8 @@ const Navbar = () => {
     const logOutHandler = () => {
         localStorage.clear();
         dispatch(userLoggedOut());
+
+        toast.success('Logged Out Successfully!!');
 
         if (location.pathname.includes('admin')) {
             navigate('/admin');

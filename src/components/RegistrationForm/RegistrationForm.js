@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../features/auth/authApi';
+import { toast } from 'react-toastify';
 
 const RegistrationForm = () => {
     // integration of RTK Query hooks here
@@ -18,12 +19,12 @@ const RegistrationForm = () => {
     // informing and navigating user based on registration success or error here
     useEffect(() => {
         if (isSuccess) {
-            console.log('Registration Successful!! Please, Login To Your Account.');
+            toast.success('Registration Successful!! Please, Login To Your Account.');
             navigate('/');
         }
 
         if (isError) {
-            console.log(error?.data);
+            toast.error(error?.data);
         }
     }, [isSuccess, isError, navigate, error]);
 
@@ -39,7 +40,7 @@ const RegistrationForm = () => {
                 name,
             });
         } else {
-            console.log('Password Mismatched!!');
+            toast.error('Password Mismatched!!');
         }
     }
 

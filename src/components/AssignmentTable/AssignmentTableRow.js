@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDeleteAssignmentMutation, useLazyGetAssignmentQuery } from '../../features/assignments/assignmentsApi';
+import { toast } from 'react-toastify';
 
 const AssignmentTableRow = ({ assignmentId, title, videoTitle, marks }) => {
     // integration of RTK Query hooks here
@@ -9,11 +10,11 @@ const AssignmentTableRow = ({ assignmentId, title, videoTitle, marks }) => {
     // informing and navigating user based on assignment delete success or error here
     useEffect(() => {
         if (isSuccess) {
-            console.log('Assignment Deleted Successfully!!.');
+            toast.success('Assignment Deleted Successfully!!');
         }
 
         if (isError) {
-            console.log('Failed To Delete The Assignment!!');
+            toast.error('Failed To Delete The Assignment!!');
         }
     }, [isSuccess, isError]);
 

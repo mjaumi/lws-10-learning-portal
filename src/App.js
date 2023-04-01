@@ -14,6 +14,8 @@ import LeaderBoard from './pages/student/LeaderBoard';
 import Quiz from './pages/student/Quiz';
 import StudentLogin from './pages/student/StudentLogin';
 import StudentRegistration from './pages/student/StudentRegistration';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   // integration of custom hooks here
@@ -25,70 +27,73 @@ function App() {
         !authChecked ?
           <div>Checking Authentication</div>
           :
-          <Router>
-            <Routes>
-              {/* student routes */}
-              < Route path='/' element={
-                <PublicRoute>
-                  <StudentLogin />
-                </PublicRoute>
-              } />
-              <Route path='/registration' element={
-                <PublicRoute>
-                  <StudentRegistration />
-                </PublicRoute>
-              } />
-              <Route path='/leader-board' element={
-                <PrivateRoute>
-                  <LeaderBoard />
-                </PrivateRoute>
-              } />
-              <Route path='/course-player' element={
-                <PrivateRoute>
-                  <CoursePlayer />
-                </PrivateRoute>
-              } />
-              <Route path='/quiz' element={
-                <PrivateRoute>
-                  <Quiz />
-                </PrivateRoute>
-              } />
-
-              {/* admin routes */}
-              <Route path='/admin'>
-                <Route index element={
+          <>
+            <Router>
+              <Routes>
+                {/* student routes */}
+                < Route path='/' element={
                   <PublicRoute>
-                    <AdminLogin />
+                    <StudentLogin />
                   </PublicRoute>
                 } />
-                <Route path='dashboard' element={
+                <Route path='/registration' element={
+                  <PublicRoute>
+                    <StudentRegistration />
+                  </PublicRoute>
+                } />
+                <Route path='/leader-board' element={
                   <PrivateRoute>
-                    <Dashboard />
+                    <LeaderBoard />
                   </PrivateRoute>
                 } />
-                <Route path='videos' element={
+                <Route path='/course-player' element={
                   <PrivateRoute>
-                    <Videos />
+                    <CoursePlayer />
                   </PrivateRoute>
                 } />
-                <Route path='assignment' element={
+                <Route path='/quiz' element={
                   <PrivateRoute>
-                    <Assignment />
+                    <Quiz />
                   </PrivateRoute>
                 } />
-                <Route path='quizzes' element={
-                  <PrivateRoute>
-                    <Quizzes />
-                  </PrivateRoute>
-                } />
-                <Route path='assignment-mark' element={
-                  <PrivateRoute>
-                    <AssignmentMark />
-                  </PrivateRoute>
-                } />
-              </Route>
-            </Routes>
-          </Router>
+
+                {/* admin routes */}
+                <Route path='/admin'>
+                  <Route index element={
+                    <PublicRoute>
+                      <AdminLogin />
+                    </PublicRoute>
+                  } />
+                  <Route path='dashboard' element={
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  } />
+                  <Route path='videos' element={
+                    <PrivateRoute>
+                      <Videos />
+                    </PrivateRoute>
+                  } />
+                  <Route path='assignment' element={
+                    <PrivateRoute>
+                      <Assignment />
+                    </PrivateRoute>
+                  } />
+                  <Route path='quizzes' element={
+                    <PrivateRoute>
+                      <Quizzes />
+                    </PrivateRoute>
+                  } />
+                  <Route path='assignment-mark' element={
+                    <PrivateRoute>
+                      <AssignmentMark />
+                    </PrivateRoute>
+                  } />
+                </Route>
+              </Routes>
+            </Router>
+            <ToastContainer position='top-center' theme='dark' />
+          </>
       }
     </>
   );

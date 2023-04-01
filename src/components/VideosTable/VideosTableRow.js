@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDeleteVideoMutation, useLazyGetVideoQuery } from '../../features/videos/videosApi';
+import { toast } from 'react-toastify';
 
 const VideosTableRow = ({ videoId, title, description }) => {
     // integration of RTK Query hooks here
@@ -9,11 +10,11 @@ const VideosTableRow = ({ videoId, title, description }) => {
     // informing and navigating user based on video delete success or error here
     useEffect(() => {
         if (isDltSuccess) {
-            console.log('Video Deleted Successfully!!.');
+            toast.success('Video Deleted Successfully!!');
         }
 
         if (isDltError) {
-            console.log('Failed To Delete The Video!!');
+            toast.error('Failed To Delete The Video!!');
         }
     }, [isDltSuccess, isDltError]);
 

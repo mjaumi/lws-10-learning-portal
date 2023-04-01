@@ -82,8 +82,6 @@ export const videosApi = apiSlice.injectEndpoints({
                         .then(data => relatedQuizzes = [...data])
                         .catch();
 
-                    console.log(relatedAssignments, relatedQuizzes);
-
                     relatedQuizzes.map(quiz => dispatch(
                         quizzesApi.endpoints.deleteQuiz.initiate(quiz.id)
                     ));

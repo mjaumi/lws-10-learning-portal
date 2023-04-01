@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAddAssignmentMutation, useEditAssignmentMutation } from '../../features/assignments/assignmentsApi';
 import { removeDataFromEdit } from '../../features/edit/editSlice';
 import { useGetVideosQuery } from '../../features/videos/videosApi';
+import { toast } from 'react-toastify';
 
 const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
     // integration of RKT Query hooks here
@@ -38,24 +39,24 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
     // informing and navigating user based on assignment add success or error here
     useEffect(() => {
         if (isSuccess) {
-            console.log('Video Added Successfully!!.');
+            toast.success('Assignment Added Successfully!!');
             setIsModalOpen(false);
         }
 
         if (isError) {
-            console.log('Failed To Add New Video!!');
+            toast.error('Failed To Add New Assignment!!');
         }
     }, [isSuccess, isError, setIsModalOpen]);
 
     // informing and navigating user based on assignment edit success or error here
     useEffect(() => {
         if (isEditSuccess) {
-            console.log('Video Edited Successfully!!.');
+            toast.success('Assignment Edited Successfully!!');
             setIsModalOpen(false);
         }
 
         if (isEditError) {
-            console.log('Failed To Edit The Video!!');
+            toast.error('Failed To Edit The Assignment!!');
         }
     }, [isEditSuccess, isEditError, setIsModalOpen]);
 

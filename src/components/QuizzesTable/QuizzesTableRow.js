@@ -1,19 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDeleteQuizMutation, useLazyGetQuizQuery } from '../../features/quizzes/quizzesApi';
+import { toast } from 'react-toastify';
 
 const QuizzesTableRow = ({ quizId, question, videoTitle }) => {
     // integration or RTK Query hooks here
-    const [deleteQuiz, { isSuccess, isError, isLoading }] = useDeleteQuizMutation();
+    const [deleteQuiz, { data, isSuccess, isError, isLoading }] = useDeleteQuizMutation();
     const [triggerGetQuiz, { isLoading: isEditLoading }] = useLazyGetQuizQuery();
 
+    console.log(data, isSuccess);
     // informing and navigating user based on quiz delete success or error here
     useEffect(() => {
+
         if (isSuccess) {
-            console.log('Quiz Deleted Successfully!!.');
+            toast.success('Quiz Deleted Successfully!!');
         }
 
         if (isError) {
-            console.log('Failed To Delete The Quiz!!');
+            toast.error('Failed To Delete The Quiz!!');
         }
     }, [isSuccess, isError]);
 

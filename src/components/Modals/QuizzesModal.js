@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeDataFromEdit } from '../../features/edit/editSlice';
 import { useAddQuizMutation, useEditQuizMutation } from '../../features/quizzes/quizzesApi';
 import { useGetVideosQuery } from '../../features/videos/videosApi';
+import { toast } from 'react-toastify';
 
 const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
     // integration of RTK Query hooks here
@@ -52,24 +53,24 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
     // informing and navigating user based on quiz add success or error here
     useEffect(() => {
         if (isSuccess) {
-            console.log('Quiz Added Successfully!!.');
+            toast.success('Quiz Added Successfully!!');
             setIsModalOpen(false);
         }
 
         if (isError) {
-            console.log('Failed To Add New Quiz!!');
+            toast.error('Failed To Add New Quiz!!');
         }
     }, [isSuccess, isError, setIsModalOpen]);
 
     // informing and navigating user based on quiz edit success or error here
     useEffect(() => {
         if (isEditSuccess) {
-            console.log('Quiz Edited Successfully!!.');
+            toast.success('Quiz Edited Successfully!!');
             setIsModalOpen(false);
         }
 
         if (isEditError) {
-            console.log('Failed To Edit The Quiz!!');
+            toast.error('Failed To Edit The Quiz!!');
         }
     }, [isEditSuccess, isEditError, setIsModalOpen]);
 
@@ -147,7 +148,7 @@ const QuizzesModal = ({ isModalOpen, setIsModalOpen }) => {
 
             resetForm();
         } else {
-            console.log('Please, Select At Least 1 Correct Answer!!');
+            toast.warning('Please, Select At Least One Correct Answer!!');
         }
     }
 

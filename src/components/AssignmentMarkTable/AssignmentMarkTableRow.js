@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useUpdateAssignmentMarkMutation } from '../../features/assignmentMark/assignmentMarkApi';
+import { toast } from 'react-toastify';
 
 const AssignmentMarkTableRow = ({ assignmentMarkRow }) => {
     // destructuring the assignment mark row component here
@@ -15,11 +16,11 @@ const AssignmentMarkTableRow = ({ assignmentMarkRow }) => {
     // informing and navigating user based on video delete success or error here
     useEffect(() => {
         if (isSuccess) {
-            console.log('Assignment Mark Updated Successfully!!.');
+            toast.success('Assignment Mark Updated Successfully!!.');
         }
 
         if (isError) {
-            console.log('Failed To Update The Assignment Mark!!');
+            toast.error('Failed To Update The Assignment Mark!!');
         }
     }, [isSuccess, isError]);
 
