@@ -21,7 +21,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
             }
         }),
         // GET query to get quiz by video id from the server
-        getQuizByVideoId: builder.query({
+        getQuizzesByVideoId: builder.query({
             query: videoId => `/quizzes?video_id_like=${videoId}`,
         }),
         // POST mutation to add new quiz to the server
@@ -98,7 +98,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
 export const {
     useGetQuizzesQuery,
     useLazyGetQuizQuery,
-    useGetQuizByVideoIdQuery,
+    useGetQuizzesByVideoIdQuery,
     useAddQuizMutation,
     useDeleteQuizMutation,
     useEditQuizMutation,

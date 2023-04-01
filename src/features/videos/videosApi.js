@@ -77,7 +77,7 @@ export const videosApi = apiSlice.injectEndpoints({
                         assignmentsApi.endpoints.deleteAssignment.initiate(assignment.id)
                     ));
 
-                    await dispatch(quizzesApi.endpoints.getQuizByVideoId.initiate(videoId))
+                    await dispatch(quizzesApi.endpoints.getQuizzesByVideoId.initiate(videoId))
                         .unwrap()
                         .then(data => relatedQuizzes = [...data])
                         .catch();
@@ -133,7 +133,7 @@ export const videosApi = apiSlice.injectEndpoints({
                             })
                         ));
 
-                        await dispatch(quizzesApi.endpoints.getQuizByVideoId.initiate(videoId))
+                        await dispatch(quizzesApi.endpoints.getQuizzesByVideoId.initiate(videoId))
                             .unwrap()
                             .then(data => relatedQuizzes = [...data])
                             .catch();
