@@ -6,10 +6,16 @@ const useAuth = () => {
     const auth = useSelector(state => state.auth);
 
     if (auth.accessToken && auth.user) {
-        return true;
+        return {
+            isUserLoggedIn: true,
+            userRole: auth.user.role,
+        };
     }
 
-    return false;
+    return {
+        isUserLoggedIn: false,
+        userRole: '',
+    };
 }
 
 export default useAuth;

@@ -8,7 +8,7 @@ const useAuthCheck = () => {
     const dispatch = useDispatch();
 
     // integration or react hooks here
-    const [authChecked, setAuthChecked] = useState();
+    const [authChecked, setAuthChecked] = useState(false);
 
     useEffect(() => {
         const localAuth = localStorage?.getItem('learningPortalAuth');

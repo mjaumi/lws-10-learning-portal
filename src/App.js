@@ -28,7 +28,7 @@ function App() {
           <Router>
             <Routes>
               {/* student routes */}
-              <Route path='/' element={
+              < Route path='/' element={
                 <PublicRoute>
                   <StudentLogin />
                 </PublicRoute>
@@ -55,36 +55,38 @@ function App() {
               } />
 
               {/* admin routes */}
-              <Route path='/admin' element={
-                <PublicRoute>
-                  <AdminLogin />
-                </PublicRoute>
-              } />
-              <Route path='/admin/dashboard' element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              } />
-              <Route path='/admin/videos' element={
-                <PrivateRoute>
-                  <Videos />
-                </PrivateRoute>
-              } />
-              <Route path='/admin/assignment' element={
-                <PrivateRoute>
-                  <Assignment />
-                </PrivateRoute>
-              } />
-              <Route path='/admin/quizzes' element={
-                <PrivateRoute>
-                  <Quizzes />
-                </PrivateRoute>
-              } />
-              <Route path='/admin/assignment-mark' element={
-                <PrivateRoute>
-                  <AssignmentMark />
-                </PrivateRoute>
-              } />
+              <Route path='/admin'>
+                <Route index element={
+                  <PublicRoute>
+                    <AdminLogin />
+                  </PublicRoute>
+                } />
+                <Route path='dashboard' element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                } />
+                <Route path='videos' element={
+                  <PrivateRoute>
+                    <Videos />
+                  </PrivateRoute>
+                } />
+                <Route path='assignment' element={
+                  <PrivateRoute>
+                    <Assignment />
+                  </PrivateRoute>
+                } />
+                <Route path='quizzes' element={
+                  <PrivateRoute>
+                    <Quizzes />
+                  </PrivateRoute>
+                } />
+                <Route path='assignment-mark' element={
+                  <PrivateRoute>
+                    <AssignmentMark />
+                  </PrivateRoute>
+                } />
+              </Route>
             </Routes>
           </Router>
       }
