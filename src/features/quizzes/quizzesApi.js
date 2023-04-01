@@ -20,7 +20,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        // GET query to get quiz by video id to update them when the video title changes
+        // GET query to get quiz by video id from the server
         getQuizByVideoId: builder.query({
             query: videoId => `/quizzes?video_id_like=${videoId}`,
         }),

@@ -21,6 +21,7 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // GET query to get assignments by video id from the server
         getAssignmentsByVideoId: builder.query({
             query: videoId => `/assignments?video_id_like=${videoId}`,
         }),

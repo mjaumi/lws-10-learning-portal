@@ -1,10 +1,28 @@
 import moment from 'moment/moment';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { assignmentsApi } from '../../features/assignments/assignmentsApi';
 
 const VideoPlayer = () => {
     // integration of react-redux hooks here
-    const { title, url, description, createdAt } = useSelector(state => state.video.videoToPlay) || {};
+    const { id: videoId, title, url, description, createdAt } = useSelector(state => state.video.videoToPlay) || {};
+
+    // integration of react-redux hooks here
+    const dispatch = useDispatch();
+
+    // integration of react hooks here
+    const [relatedAssignments, setRelatedAssignments] = useState(undefined);
+
+    useEffect(() => {
+        if (videoId) {
+            dispatch(assignmentsApi.endpoints.getAssignmentsByVideoId.initiate(videoId))
+                .unwrap()
+                .then(data => setRelatedAssignments([...data]))
+                .catch();
+        }
+    }, [dispatch, videoId]);
+
+    console.log(relatedAssignments);
 
     // rendering the video player component here
     return (
@@ -14,7 +32,6 @@ const VideoPlayer = () => {
                 frameBorder='0'
                 allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                 allowFullScreen></iframe>
-
             <div>
                 <h1 className='text-lg font-semibold tracking-tight text-slate-100'>
                     {title}
@@ -24,10 +41,13 @@ const VideoPlayer = () => {
                 </h2>
 
                 <div className='flex gap-4'>
-                    <a href='./Quiz.html'
-                        className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
-                        এসাইনমেন্ট
-                    </a>
+                    {
+                        relatedAssignments?.length > 0 &&
+                        <a href='./Quiz.html'
+                            className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
+                            এসাইনমেন্ট
+                        </a>
+                    }
 
                     <a href='./Quiz.html'
                         className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
