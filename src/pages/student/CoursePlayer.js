@@ -1,13 +1,13 @@
 import React from 'react';
-import VideoPlayer from '../../components/VideoPlayer/VideoPlayer';
 import Layout from '../../layouts/Layout';
+import CoursePlaylist from '../../components/CoursePlaylist/CoursePlaylist';
 
 const CoursePlayer = () => {
 
     // rendering the course player page here
     return (
         <Layout>
-            <VideoPlayer />
+            <CoursePlaylist />
         </Layout>
     );
 };
