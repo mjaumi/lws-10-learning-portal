@@ -61,9 +61,36 @@ export const videosApi = apiSlice.injectEndpoints({
                         })
                 );
 
-                await queryFulfilled.catch(() => {
+                try {
+                    await queryFulfilled;
+
+                    // deleting related assignments & quizzes after the video is deleted
+                    let relatedAssignments = [];
+                    let relatedQuizzes = [];
+
+                    await dispatch(assignmentsApi.endpoints.getAssignmentsByVideoId.initiate(videoId))
+                        .unwrap()
+                        .then(data => relatedAssignments = [...data])
+                        .catch();
+
+                    relatedAssignments.map(assignment => dispatch(
+                        assignmentsApi.endpoints.deleteAssignment.initiate(assignment.id)
+                    ));
+
+                    await dispatch(quizzesApi.endpoints.getQuizByVideoId.initiate(videoId))
+                        .unwrap()
+                        .then(data => relatedQuizzes = [...data])
+                        .catch();
+
+                    console.log(relatedAssignments, relatedQuizzes);
+
+                    relatedQuizzes.map(quiz => dispatch(
+                        quizzesApi.endpoints.deleteQuiz.initiate(quiz.id)
+                    ));
+
+                } catch (error) {
                     deleteResult.undo();
-                });
+                }
             }
         }),
         // PATCH mutation to edit video information in the server
