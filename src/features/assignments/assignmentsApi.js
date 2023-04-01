@@ -21,6 +21,9 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getAssignmentsByVideoId: builder.query({
+            query: videoId => `/assignments?video_id_like=${videoId}`,
+        }),
         // POST mutation to add new assignment in the server
         addAssignment: builder.mutation({
             query: data => ({
@@ -93,6 +96,7 @@ export const assignmentsApi = apiSlice.injectEndpoints({
 export const {
     useGetAssignmentsQuery,
     useLazyGetAssignmentQuery,
+    useGetAssignmentsByVideoIdQuery,
     useAddAssignmentMutation,
     useDeleteAssignmentMutation,
     useEditAssignmentMutation,

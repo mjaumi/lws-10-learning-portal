@@ -1,5 +1,7 @@
 import { apiSlice } from '../api/apiSlice';
+import { assignmentsApi } from '../assignments/assignmentsApi';
 import { getDataToEdit } from '../edit/editSlice';
+import { quizzesApi } from '../quizzes/quizzesApi';
 
 // initializing the videos APIs here
 export const videosApi = apiSlice.injectEndpoints({
@@ -73,7 +75,9 @@ export const videosApi = apiSlice.injectEndpoints({
             }),
 
             // updating videos in redux store pessimistically when a video is edited 
-            async onQueryStarted({ videoId }, { queryFulfilled, dispatch }) {
+            async onQueryStarted({ videoId }, { queryFulfilled, dispatch, getState }) {
+                const unEditedVideo = getState().learningPortalAPI.queries[`getVideo(${videoId})`]?.data;
+
                 const editedVideoResult = await queryFulfilled;
 
                 if (editedVideoResult?.data?.id) {
@@ -84,6 +88,40 @@ export const videosApi = apiSlice.injectEndpoints({
                             draftVideos.splice(editedVideoIndex, 1, editedVideoResult.data);
                         })
                     );
+
+                    // updating related quizzes & assignments when the video title is edited
+                    if (unEditedVideo.title !== editedVideoResult.data.title) {
+                        let relatedAssignments = [];
+                        let relatedQuizzes = [];
+
+                        await dispatch(assignmentsApi.endpoints.getAssignmentsByVideoId.initiate(videoId))
+                            .unwrap()
+                            .then(data => relatedAssignments = [...data])
+                            .catch();
+
+                        relatedAssignments.map(assignment => dispatch(
+                            assignmentsApi.endpoints.editAssignment.initiate({
+                                assignmentId: assignment.id,
+                                data: {
+                                    video_title: editedVideoResult.data.title,
+                                },
+                            })
+                        ));
+
+                        await dispatch(quizzesApi.endpoints.getQuizByVideoId.initiate(videoId))
+                            .unwrap()
+                            .then(data => relatedQuizzes = [...data])
+                            .catch();
+
+                        relatedQuizzes.map(quiz => dispatch(
+                            quizzesApi.endpoints.editQuiz.initiate({
+                                quizId: quiz.id,
+                                data: {
+                                    video_title: editedVideoResult.data.title,
+                                },
+                            })
+                        ));
+                    }
                 }
             }
         }),

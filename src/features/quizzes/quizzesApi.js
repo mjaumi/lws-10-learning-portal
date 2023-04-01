@@ -20,6 +20,10 @@ export const quizzesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // GET query to get quiz by video id to update them when the video title changes
+        getQuizByVideoId: builder.query({
+            query: videoId => `/quizzes?video_id_like=${videoId}`,
+        }),
         // POST mutation to add new quiz to the server
         addQuiz: builder.mutation({
             query: data => ({
@@ -94,6 +98,7 @@ export const quizzesApi = apiSlice.injectEndpoints({
 export const {
     useGetQuizzesQuery,
     useLazyGetQuizQuery,
+    useGetQuizByVideoIdQuery,
     useAddQuizMutation,
     useDeleteQuizMutation,
     useEditQuizMutation,
