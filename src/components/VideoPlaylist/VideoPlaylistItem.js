@@ -1,22 +1,21 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { getVideoToPlay } from '../../features/video/videoSlice';
+import { useNavigate } from 'react-router-dom';
 
 const VideoPlaylistItem = ({ video }) => {
     // destructuring the video object here
-    const { title, duration, views } = video || {};
+    const { id, title, duration, views } = video || {};
 
-    // integration of react-redux hooks here
-    const dispatch = useDispatch();
+    // integration or react-router-dom hooks here
+    const navigate = useNavigate();
 
-
-    const playVideoHandler = () => {
-        dispatch(getVideoToPlay(video));
+    // handler function to select video
+    const selectVideoHandler = () => {
+        navigate(`/course-player/${id}`);
     }
 
     // rendering the video playlist item component here
     return (
-        <div onClick={playVideoHandler} className='w-full flex flex-row gap-2 cursor-pointer hover:bg-slate-900 p-2 py-3'>
+        <div onClick={selectVideoHandler} className='w-full flex flex-row gap-2 cursor-pointer hover:bg-slate-900 p-2 py-3'>
             {/* <!-- Thumbnail --> */}
             <svg fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' className='w-6 h-6'>
                 <path strokeLinecap='round' strokeLinejoin='round'

@@ -1,33 +1,20 @@
 import React from 'react';
+import QuizQuestionOption from './QuizQuestionOption';
 
-const QuizQuestion = () => {
+const QuizQuestion = ({ index, quiz }) => {
+    // destructuring the quiz object here
+    const { question, options } = quiz || {};
+
     return (
         <div className='quiz'>
-            <h4 className='question'>Quiz 1 - What is a Debounce function in JavaScript?</h4>
+            <h4 className='question'>Quiz {index + 1} - {question}</h4>
             <form className='quizOptions'>
-                {/* <!-- Option 1 --> */}
-                <label for='option1_q1'>
-                    <input type='checkbox' id='option1_q1' />
-                    A function that is called after a certain time interval
-                </label>
-
-                {/* <!-- Option 2 --> */}
-                <label for='option2_q1'>
-                    <input type='checkbox' id='option2_q1' />
-                    A function that is called after a certain time interval
-                </label>
-
-                {/* <!-- Option 3 --> */}
-                <label for='option3_q1'>
-                    <input type='checkbox' id='option3_q1' />
-                    A function that is called after a certain time interval
-                </label>
-
-                {/* <!-- Option 4 --> */}
-                <label for='option4_q1'>
-                    <input type='checkbox' id='option4_q1' />
-                    A function that is called after a certain time interval
-                </label>
+                {
+                    options.map(option => <QuizQuestionOption
+                        key={option.id}
+                        option={option}
+                    />)
+                }
             </form>
         </div>
     );

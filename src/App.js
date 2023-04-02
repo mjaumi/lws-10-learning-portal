@@ -51,7 +51,7 @@ function App() {
                     <CoursePlayer />
                   </PrivateRoute>
                 } />
-                <Route path='/quiz' element={
+                <Route path='/quiz/:videoId' element={
                   <PrivateRoute>
                     <Quiz />
                   </PrivateRoute>

@@ -32,7 +32,7 @@ const Navbar = () => {
     return (
         <nav className='shadow-md'>
             <div className='max-w-7xl px-5 lg:px-0 mx-auto flex justify-between py-3'>
-                <Link to={location.pathname.includes('admin') ? '/admin/dashboard' : '/course-player'}>
+                <Link to={location.pathname.includes('admin') ? '/admin/dashboard' : '/course-player/1'}>
                     <img className='h-10' src={logo} alt='logo' />
                 </Link>
                 <div className='flex items-center gap-3'>

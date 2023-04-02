@@ -1,23 +1,32 @@
 import moment from 'moment/moment';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { assignmentsApi } from '../../features/assignments/assignmentsApi';
 import { quizzesApi } from '../../features/quizzes/quizzesApi';
 import { FaBan } from 'react-icons/fa';
 import { FiCheckCircle } from 'react-icons/fi';
 import { ImWarning } from 'react-icons/im';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { videosApi } from '../../features/videos/videosApi';
 
 const VideoPlayer = () => {
     // integration of react-redux hooks here
-    const { id: videoId, title, url, description, createdAt } = useSelector(state => state.video.videoToPlay) || {};
-
-    // integration of react-redux hooks here
     const dispatch = useDispatch();
 
+    // integration or react-router-dom hooks here
+    const { videoId } = useParams();
+
     // integration of react hooks here
+    const [video, setVideo] = useState(undefined);
     const [relatedAssignments, setRelatedAssignments] = useState(undefined);
     const [relatedQuizzes, setRelatedQuizzes] = useState(undefined);
+
+    useEffect(() => {
+        dispatch(videosApi.endpoints.getVideo.initiate(videoId))
+            .unwrap()
+            .then(data => setVideo(data))
+            .catch();
+    }, [dispatch, videoId]);
 
     // fetching related assignments & quizzes on video loading
     useEffect(() => {
@@ -37,19 +46,19 @@ const VideoPlayer = () => {
     // rendering the video player component here
     return (
         <div className='col-span-full w-full space-y-8 lg:col-span-2'>
-            <iframe width='100%' className='aspect-video' src={url}
-                title={title}
+            <iframe width='100%' className='aspect-video' src={video?.url + '?autoplay=1'}
+                title={video?.title}
                 frameBorder='0'
-                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                allow='accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture'
                 allowFullScreen></iframe>
             <div>
                 <div className='flex justify-between'>
                     <div>
                         <h1 className='text-lg font-semibold tracking-tight text-slate-100'>
-                            {title}
+                            {video?.title}
                         </h1>
                         <h2 className=' pb-4 text-sm leading-[1.7142857] text-slate-400'>
-                            Uploaded on {moment(createdAt).format('DD MMMM YYYY')}
+                            Uploaded on {moment(video?.createdAt).format('DD MMMM YYYY')}
                         </h2>
                     </div>
                     <div className='mr-3'>
@@ -84,13 +93,13 @@ const VideoPlayer = () => {
 
                     {
                         relatedQuizzes?.length > 0 &&
-                        <Link to={'/quiz'} className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
+                        <Link to={`/quiz/${videoId}`} className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
                             কুইজে অংশগ্রহণ করুন
                         </Link>
                     }
                 </div>
                 <p className='mt-4 text-sm text-slate-400 leading-6'>
-                    {description}
+                    {video?.description}
                 </p>
             </div>
         </div>

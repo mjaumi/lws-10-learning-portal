@@ -1,22 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import VideoPlaylistItem from './VideoPlaylistItem';
 import { useGetVideosQuery } from '../../features/videos/videosApi';
-import { useDispatch } from 'react-redux';
-import { getVideoToPlay } from '../../features/video/videoSlice';
 
 const VideoPlaylist = () => {
     // integration of RTK Query hooks here
     const { data: videos, isLoading, isError } = useGetVideosQuery();
-
-    // integration of react-redux hooks here
-    const dispatch = useDispatch();
-
-    // setting first video to play on load
-    useEffect(() => {
-        if (videos?.length) {
-            dispatch(getVideoToPlay(videos[0]));
-        }
-    }, [dispatch, videos]);
 
     // deciding what to render
     let content = null;
