@@ -46,7 +46,7 @@ function App() {
                     <LeaderBoard />
                   </PrivateRoute>
                 } />
-                <Route path='/course-player' element={
+                <Route path='/course-player/:videoId' element={
                   <PrivateRoute>
                     <CoursePlayer />
                   </PrivateRoute>

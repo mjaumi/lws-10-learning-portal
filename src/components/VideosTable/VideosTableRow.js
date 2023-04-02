@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useDeleteVideoMutation, useLazyGetVideoQuery } from '../../features/videos/videosApi';
+import { useDeleteVideoMutation, useLazyGetVideoToEditQuery } from '../../features/videos/videosApi';
 import { toast } from 'react-toastify';
 
 const VideosTableRow = ({ videoId, title, description }) => {
     // integration of RTK Query hooks here
     const [deleteVideo, { isSuccess: isDltSuccess, isError: isDltError, isLoading: isDltLoading }] = useDeleteVideoMutation();
-    const [triggerGetVideo, { isLoading }] = useLazyGetVideoQuery();
+    const [triggerGetVideo, { isLoading }] = useLazyGetVideoToEditQuery();
 
     // informing and navigating user based on video delete success or error here
     useEffect(() => {

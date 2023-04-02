@@ -13,6 +13,14 @@ export const videosApi = apiSlice.injectEndpoints({
         // GET query to get single video from server
         getVideo: builder.query({
             query: videoId => `/videos/${videoId}`,
+        }),
+        // GET query to get only the first video
+        getTheFirstVideo: builder.query({
+            query: () => '/videos?_limit=1',
+        }),
+        // GET query to get single video from server to edit
+        getVideoToEdit: builder.query({
+            query: videoId => `/videos/${videoId}`,
 
             async onQueryStarted(arg, { queryFulfilled, dispatch }) {
                 const video = await queryFulfilled;
@@ -155,7 +163,9 @@ export const videosApi = apiSlice.injectEndpoints({
 
 export const {
     useGetVideosQuery,
-    useLazyGetVideoQuery,
+    useGetVideoQuery,
+    useGetTheFirstVideoQuery,
+    useLazyGetVideoToEditQuery,
     useAddVideoMutation,
     useDeleteVideoMutation,
     useEditVideoMutation,

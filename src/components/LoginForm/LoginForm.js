@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../features/auth/authApi';
 import { userLoggedOut } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
+import useGetFirstVideoId from '../../hooks/useGetFirstVideoId';
 
 const LoginForm = () => {
     // integration or RTK Query hooks here
-    const [login, { isSuccess, isError, isLoading }] = useLoginMutation();
+    const [login, { data, isError, isLoading }] = useLoginMutation();
 
     // integration of react-redux hooks here
-    const user = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
     // integration or react hooks here
@@ -21,35 +21,40 @@ const LoginForm = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // integration of custom hooks here
+    const { videoId, isFirstVideoFetched } = useGetFirstVideoId();
+
     // navigating and informing user based on login success or error here
     useEffect(() => {
-        if (user?.role) {
-            if (isSuccess) {
-                if (location.pathname.includes('admin')) {
-                    if (user.role === 'admin') {
-                        toast.success('Login Successful!!');
-                        navigate('/admin/dashboard');
-                    } else {
-                        toast.error('Wrong Admin Credentials!!');
-                        dispatch(userLoggedOut());
-                        localStorage.clear();
+        if (data?.accessToken && data.user) {
+            if (location.pathname.includes('admin')) {
+                if (data.user.role === 'admin') {
+                    toast.success('Login Successful!!');
+                    navigate('/admin/dashboard');
+                } else {
+                    toast.error('Wrong Admin Credentials!!');
+                    dispatch(userLoggedOut());
+                    localStorage.clear();
+                }
+            } else {
+                if (data.user.role === 'student') {
+                    toast.success(`Logged In Successfully!! Welcome, ${data.user.name}`);
+
+                    if (isFirstVideoFetched) {
+                        navigate(`/course-player/${videoId}`);
                     }
                 } else {
-                    if (user.role === 'student') {
-                        toast.success('Login Successful!!');
-                        navigate('/course-player');
-                    } else {
-                        toast.error('Wrong Student Credentials!!');
-                        dispatch(userLoggedOut());
-                        localStorage.clear();
-                    }
+                    toast.error('Wrong Student Credentials!!');
+                    dispatch(userLoggedOut());
+                    localStorage.clear();
                 }
             }
-            if (isError) {
-                toast.error('Login Failed!!');
-            }
         }
-    }, [dispatch, isError, isSuccess, navigate, user, location]);
+
+        if (isError) {
+            toast.error('Incorrect Email Or Password!!');
+        }
+    }, [data, dispatch, isError, navigate, location, videoId, isFirstVideoFetched]);
 
     // handler function to handle login
     const loginHandler = e => {

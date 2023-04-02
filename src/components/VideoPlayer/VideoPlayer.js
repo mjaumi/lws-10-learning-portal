@@ -6,6 +6,7 @@ import { quizzesApi } from '../../features/quizzes/quizzesApi';
 import { FaBan } from 'react-icons/fa';
 import { FiCheckCircle } from 'react-icons/fi';
 import { ImWarning } from 'react-icons/im';
+import { Link } from 'react-router-dom';
 
 const VideoPlayer = () => {
     // integration of react-redux hooks here
@@ -32,8 +33,6 @@ const VideoPlayer = () => {
                 .catch();
         }
     }, [dispatch, videoId]);
-
-    console.log(relatedAssignments);
 
     // rendering the video player component here
     return (
@@ -78,18 +77,16 @@ const VideoPlayer = () => {
                 <div className='flex gap-4'>
                     {
                         relatedAssignments?.length > 0 &&
-                        <a href='./Quiz.html'
-                            className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
+                        <a href='./Quiz.html' className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
                             এসাইনমেন্ট
                         </a>
                     }
 
                     {
                         relatedQuizzes?.length > 0 &&
-                        <a href='./Quiz.html'
-                            className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
+                        <Link to={'/quiz'} className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
                             কুইজে অংশগ্রহণ করুন
-                        </a>
+                        </Link>
                     }
                 </div>
                 <p className='mt-4 text-sm text-slate-400 leading-6'>
