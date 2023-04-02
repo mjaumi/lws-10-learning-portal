@@ -8,6 +8,7 @@ import { FiCheckCircle } from 'react-icons/fi';
 import { ImWarning } from 'react-icons/im';
 import { Link, useParams } from 'react-router-dom';
 import { videosApi } from '../../features/videos/videosApi';
+import { resetQuizAnswers } from '../../features/selectQuizAnswer/selectQuizAnswerSlice';
 
 const VideoPlayer = () => {
     // integration of react-redux hooks here
@@ -21,6 +22,12 @@ const VideoPlayer = () => {
     const [relatedAssignments, setRelatedAssignments] = useState(undefined);
     const [relatedQuizzes, setRelatedQuizzes] = useState(undefined);
 
+    // resetting quiz selected answers in the store when user redirects to this page
+    useEffect(() => {
+        dispatch(resetQuizAnswers());
+    }, [dispatch]);
+
+    // fetching individual video to play here
     useEffect(() => {
         dispatch(videosApi.endpoints.getVideo.initiate(videoId))
             .unwrap()
@@ -49,7 +56,7 @@ const VideoPlayer = () => {
             <iframe width='100%' className='aspect-video' src={video?.url + '?autoplay=1'}
                 title={video?.title}
                 frameBorder='0'
-                allow='accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;'
                 allowFullScreen></iframe>
             <div>
                 <div className='flex justify-between'>

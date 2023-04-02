@@ -1,15 +1,63 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import QuizQuestion from './QuizQuestion';
 import { AiOutlineFileDone } from 'react-icons/ai';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetQuizzesByVideoIdQuery } from '../../features/quizzes/quizzesApi';
+import { useSelector } from 'react-redux';
+import objectsEqual from '../../utils/objectsEqual';
+import { useAddQuizMarkMutation } from '../../features/quizMark/quizMarkApi';
+import { toast } from 'react-toastify';
 
 const QuizSet = () => {
     // integration of react-router-dom hooks here
     const { videoId } = useParams();
 
-    // integration or RTK Query hooks here
+    // integration of RTK Query hooks here
     const { data: quizzes, isLoading, isError } = useGetQuizzesByVideoIdQuery(videoId);
+    const [addQuizMark, { isLoading: isSubmitLoading, isError: isSubmitError, isSuccess }] = useAddQuizMarkMutation();
+
+    // integration of react-redux hooks here
+    const { quizAnswers } = useSelector(state => state.selectedQuizAnswers);
+    const { user } = useSelector(state => state.auth);
+
+    // integration of react-router-dom hooks here
+    const navigate = useNavigate();
+
+    // notifying user based on quiz answer submit success or error 
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success('Answer Submitted Successfully!!');
+            navigate('/leader-board');
+        }
+
+        if (isSubmitError) {
+            toast.error('Failed To Submit The Answers!!');
+        }
+    }, [isSubmitError, isSuccess, navigate]);
+
+    // this function is checking the correct answers
+    const isAnswersCorrect = (questions, answers) => {
+        return questions?.length === answers?.length && questions.every((value, index) => objectsEqual(value, answers[index]));
+    }
+
+    // handler function to submit answers
+    const submitAnswersHandler = () => {
+        const correctAnswers = quizAnswers.filter(answer => isAnswersCorrect(answer.selectedOptions, quizzes[answer.quizIndex].options));
+
+        console.log(correctAnswers.length * 5);
+
+        addQuizMark({
+            student_id: user.id,
+            student_name: user.name,
+            video_id: quizzes[0].video_id,
+            video_title: quizzes[0].video_title,
+            totalQuiz: quizzes.length,
+            totalCorrect: correctAnswers.length,
+            totalWrong: quizzes.length - correctAnswers.length,
+            totalMark: quizzes.length * 5,
+            mark: correctAnswers.length * 5,
+        });
+    }
 
     // deciding what to render here
     let content = null;
@@ -43,7 +91,7 @@ const QuizSet = () => {
                     }
                 </div>
 
-                <button className='btn btn-sm btn-secondary border-2 border-secondary px-6 rounded-full text-black font-medium ml-auto hover:bg-primary hover:text-white duration-300 flex items-center capitalize mt-8'>
+                <button onClick={submitAnswersHandler} className='btn btn-sm btn-secondary border-2 border-secondary px-6 rounded-full text-black font-medium ml-auto hover:bg-primary hover:text-white duration-300 flex items-center capitalize mt-8' disabled={isSubmitLoading}>
                     <AiOutlineFileDone className='mr-2' />
                     Submit Answers
                 </button>

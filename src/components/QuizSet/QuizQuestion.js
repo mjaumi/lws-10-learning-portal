@@ -13,6 +13,7 @@ const QuizQuestion = ({ index, quiz }) => {
                     options.map(option => <QuizQuestionOption
                         key={option.id}
                         option={option}
+                        quizIndex={index}
                     />)
                 }
             </form>

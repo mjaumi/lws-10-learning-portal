@@ -1291,19 +1291,6 @@ body {
   font-weight: 500;
 }
 
-.quizOptions input {
-  display: none;
-}
-
-.quizOptions label:has(input:checked) {
-  --tw-border-opacity: 1;
-  border-color: rgb(30 41 59 / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(74 222 128 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(30 41 59 / var(--tw-text-opacity));
-}
-
 .quizOptions .eachAnswer:hover {
   background: hsla(229, 20%, 57%, 0.253);
 }
