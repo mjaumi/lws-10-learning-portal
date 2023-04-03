@@ -20,12 +20,25 @@ export const quizMarkApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
+
+            async onQueryStarted(data, { queryFulfilled, dispatch }) {
+                const addedQuizMark = await queryFulfilled;
+
+                if (addedQuizMark?.data?.id) {
+                    dispatch(apiSlice.util.updateQueryData('getQuizMarks', undefined,
+                        draftQuizMarks => {
+                            draftQuizMarks.push(addedQuizMark.data);
+                        })
+                    );
+                }
+            }
         }),
     }),
 });
 
 export const {
     useGetQuizMarksQuery,
+    useLazyGetQuizMarkByStudentAndVideoIdQuery,
     useGetQuizMarkByStudentIdQuery,
     useAddQuizMarkMutation,
 } = quizMarkApi;

@@ -31,7 +31,7 @@ const AssignmentMarkTableRow = ({ assignmentMarkRow }) => {
         updateAssignmentMark({
             id,
             data: {
-                mark: assignmentMark,
+                mark: Number(assignmentMark),
                 status: 'published',
             }
         });
