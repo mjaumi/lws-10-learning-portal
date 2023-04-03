@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLazyGetQuizMarkByStudentAndVideoIdQuery } from '../features/quizMark/quizMarkApi';
 
 // custom hook to check has student submitted the quiz or not
@@ -10,9 +9,6 @@ const useHasStudentSubmittedQuiz = (studentId, videoId) => {
     // integration of react hooks here
     const [hasSubmittedQuiz, setHasSubmittedQuiz] = useState(false);
     const [hasLoaded, setHasLoaded] = useState(false);
-
-    // integration of react-redux hooks here
-    const dispatch = useDispatch();
 
     // getting quiz mark entries to check if the student has submitted the quiz or not
     useEffect(() => {
@@ -26,11 +22,11 @@ const useHasStudentSubmittedQuiz = (studentId, videoId) => {
             }
             setHasLoaded(isSuccess);
         }
-    }, [dispatch, studentId, videoId, hasLoaded, data, isSuccess, triggerGetQuizMarkByStudentAndVideoIdQuery]);
+    }, [studentId, videoId, data, isSuccess, triggerGetQuizMarkByStudentAndVideoIdQuery]);
 
     return {
         hasSubmittedQuiz,
-        hasLoaded: isSuccess,
+        hasLoaded,
     };
 }
 

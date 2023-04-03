@@ -7,6 +7,29 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
         getAssignmentMark: builder.query({
             query: () => '/assignmentMark',
         }),
+        // GET query to get assignment marks by studentId & assignmentId
+        getAssignmentMarkByStudentAndAssignmentId: builder.query({
+            query: ({ studentId, assignmentId }) => `/assignmentMark?student_id_like=${studentId}&assignment_id_like=${assignmentId}`,
+        }),
+        // POST mutation to add new assignment mark in the server
+        addAssignmentMark: builder.mutation({
+            query: data => ({
+                url: '/assignmentMark',
+                method: 'POST',
+                body: data,
+            }),
+
+            async onQueryStarted(data, { queryFulfilled, dispatch }) {
+                const addedAssignmentMark = await queryFulfilled;
+
+                if (addedAssignmentMark?.data?.id) {
+                    dispatch(apiSlice.util.updateQueryData('getAssignmentMark', undefined,
+                        draftAssignmentMark => {
+                            draftAssignmentMark.push(addedAssignmentMark.data);
+                        }));
+                }
+            }
+        }),
         // PATCH mutation to update assignment mark in the server
         updateAssignmentMark: builder.mutation({
             query: ({ id, data }) => ({
@@ -35,5 +58,7 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
 
 export const {
     useGetAssignmentMarkQuery,
+    useLazyGetAssignmentMarkByStudentAndAssignmentIdQuery,
+    useAddAssignmentMarkMutation,
     useUpdateAssignmentMarkMutation,
 } = assignmentMarkApi;

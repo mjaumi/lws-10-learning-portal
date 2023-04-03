@@ -7,9 +7,7 @@ export const quizMarkApi = apiSlice.injectEndpoints({
         getQuizMarks: builder.query({
             query: () => '/quizMark',
         }),
-        getQuizMarkByStudentId: builder.query({
-            query: studentId => `/quizMark?student_id_like=${studentId}`,
-        }),
+        // GET query to get quiz marks by studentId & videoId
         getQuizMarkByStudentAndVideoId: builder.query({
             query: ({ studentId, videoId }) => `/quizMark?student_id_like=${studentId}&video_id_like=${videoId}`,
         }),
@@ -21,6 +19,7 @@ export const quizMarkApi = apiSlice.injectEndpoints({
                 body: data,
             }),
 
+            // updating quiz marks pessimistically after a quiz is submitted 
             async onQueryStarted(data, { queryFulfilled, dispatch }) {
                 const addedQuizMark = await queryFulfilled;
 

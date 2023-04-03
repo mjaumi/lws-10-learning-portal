@@ -70,6 +70,9 @@ const LeaderBoardTable = () => {
         // sorting the leaderboard data here
         const sortedLeaderboardData = leaderboardData.sort((ld1, ld2) => ((ld1.quizMark + ld1.assignmentMark) < (ld2.quizMark + ld2.assignmentMark)) ? 1 : ((ld1.quizMark + ld1.assignmentMark) > (ld2.quizMark + ld2.assignmentMark)) ? -1 : 0);
 
+        const userData = sortedLeaderboardData.find(data => data.studentId === user.id);
+        const userRank = sortedLeaderboardData.findIndex(studentData => studentData.studentId === user.id);
+
         content =
             <>
                 <div>
@@ -87,11 +90,11 @@ const LeaderBoardTable = () => {
 
                         <tbody>
                             <tr className='border-2 border-cyan'>
-                                <td className='table-td text-center font-bold'>{sortedLeaderboardData.findIndex(studentData => studentData.studentId === user.id) + 1}</td>
+                                <td className='table-td text-center font-bold'>{userRank > -1 ? userRank + 1 : sortedLeaderboardData.length + 1}</td>
                                 <td className='table-td text-center font-bold'>{user.name}</td>
-                                <td className='table-td text-center font-bold'>{sortedLeaderboardData.find(data => data.studentId === user.id).quizMark}</td>
-                                <td className='table-td text-center font-bold'>{sortedLeaderboardData.find(data => data.studentId === user.id).assignmentMark}</td>
-                                <td className='table-td text-center font-bold'>{sortedLeaderboardData.find(data => data.studentId === user.id).quizMark + sortedLeaderboardData.find(data => data.studentId === user.id).assignmentMark}</td>
+                                <td className='table-td text-center font-bold'>{userData ? userData.quizMark : 0}</td>
+                                <td className='table-td text-center font-bold'>{userData ? userData.assignmentMark : 0}</td>
+                                <td className='table-td text-center font-bold'>{userData ? userData.assignmentMark + userData.quizMark : 0}</td>
                             </tr>
                         </tbody>
                     </table>

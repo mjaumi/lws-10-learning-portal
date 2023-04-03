@@ -107,7 +107,7 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
     // rendering the assignment modal component here
     return (
         <div data-theme='learning-portal-theme'>
-            <input type='checkbox' id='video-modal' className='modal-toggle' />
+            <input type='checkbox' id='assignment-modal' className='modal-toggle' />
             <div className={`modal modal-bottom sm:modal-middle bg-primary/60 ${isModalOpen && 'modal-open'}`}>
                 <div className='modal-box relative bg-primary border-2 border-secondary'>
                     <button onClick={modalCloseHandler} className='btn btn-sm btn-circle absolute right-2 top-2'>✕</button>
