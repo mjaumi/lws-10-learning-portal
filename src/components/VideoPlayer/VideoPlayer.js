@@ -1,6 +1,6 @@
 import moment from 'moment/moment';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { assignmentsApi } from '../../features/assignments/assignmentsApi';
 import { quizzesApi } from '../../features/quizzes/quizzesApi';
 import { FaBan } from 'react-icons/fa';
@@ -9,13 +9,18 @@ import { ImWarning } from 'react-icons/im';
 import { Link, useParams } from 'react-router-dom';
 import { videosApi } from '../../features/videos/videosApi';
 import { resetQuizAnswers } from '../../features/selectQuizAnswer/selectQuizAnswerSlice';
+import useHasStudentSubmittedQuiz from '../../hooks/useHasStudentSubmittedQuiz';
 
 const VideoPlayer = () => {
     // integration of react-redux hooks here
+    const { user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     // integration or react-router-dom hooks here
     const { videoId } = useParams();
+
+    // integration of custom hooks here
+    const { hasSubmittedQuiz, hasLoaded } = useHasStudentSubmittedQuiz(user.id, videoId);
 
     // integration of react hooks here
     const [video, setVideo] = useState(undefined);
@@ -70,22 +75,22 @@ const VideoPlayer = () => {
                     </div>
                     <div className='mr-3'>
                         {
-                            (relatedQuizzes?.length === 1) ?
-                                <span className='flex items-center text-xs text-warning'>
-                                    <ImWarning className='mr-1 h-4 w-4' />
-                                    কুইজ বাকী আছে
-                                </span>
-                                :
-                                relatedQuizzes?.length > 1 ?
+                            (relatedQuizzes?.length > 0) ?
+                                (hasLoaded && !hasSubmittedQuiz) ?
+                                    <span className='flex items-center text-xs text-warning'>
+                                        <ImWarning className='mr-1 h-4 w-4' />
+                                        কুইজ বাকী আছে
+                                    </span>
+                                    :
                                     <span className='flex items-center text-xs text-success'>
                                         <FiCheckCircle className='mr-1 h-4 w-4' />
                                         কুইজ দিয়েছেন
                                     </span>
-                                    :
-                                    <span className='flex items-center text-xs text-base-200'>
-                                        <FaBan className='mr-1 h-4 w-4' />
-                                        কুইজ নেই
-                                    </span>
+                                :
+                                <span className='flex items-center text-xs text-base-200'>
+                                    <FaBan className='mr-1 h-4 w-4' />
+                                    কুইজ নেই
+                                </span>
                         }
                     </div>
                 </div>
@@ -99,7 +104,7 @@ const VideoPlayer = () => {
                     }
 
                     {
-                        relatedQuizzes?.length > 0 &&
+                        (relatedQuizzes?.length > 0 && !(hasLoaded && hasSubmittedQuiz)) &&
                         <Link to={`/quiz/${videoId}`} className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
                             কুইজে অংশগ্রহণ করুন
                         </Link>

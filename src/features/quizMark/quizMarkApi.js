@@ -7,6 +7,13 @@ export const quizMarkApi = apiSlice.injectEndpoints({
         getQuizMarks: builder.query({
             query: () => '/quizMark',
         }),
+        getQuizMarkByStudentId: builder.query({
+            query: studentId => `/quizMark?student_id_like=${studentId}`,
+        }),
+        getQuizMarkByStudentAndVideoId: builder.query({
+            query: ({ studentId, videoId }) => `/quizMark?student_id_like=${studentId}&video_id_like=${videoId}`,
+        }),
+        // POST mutation to add new quiz mark in the server
         addQuizMark: builder.mutation({
             query: data => ({
                 url: '/quizMark',
@@ -19,5 +26,6 @@ export const quizMarkApi = apiSlice.injectEndpoints({
 
 export const {
     useGetQuizMarksQuery,
+    useGetQuizMarkByStudentIdQuery,
     useAddQuizMarkMutation,
 } = quizMarkApi;
