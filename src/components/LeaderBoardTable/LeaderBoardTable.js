@@ -58,20 +58,48 @@ const LeaderBoardTable = () => {
         const totalSubmittedStudents = studentsSubmittedAssignment.reduce((totalStudents, student) => mergeStudents(totalStudents, student, studentsSubmittedQuiz), [...studentsSubmittedQuiz]);
 
         // mapping the leaderboard data here
-        const leaderboardData = totalSubmittedStudents.map(student => {
-            return {
-                studentId: student.id,
-                studentName: student.name,
-                quizMark: allQuizMarks.reduce((total, quizMark) => quizMark.student_id === student.id ? total += quizMark.mark : total, 0),
-                assignmentMark: allAssignmentMarks.reduce((total, assignmentMark) => (assignmentMark.student_id === student.id && assignmentMark.status === 'published') ? total += assignmentMark.mark : total, 0)
-            }
-        });
+        let leaderboardData = null;
+
+        if (students.length > 20) {
+            leaderboardData = totalSubmittedStudents.map(student => {
+                return {
+                    studentId: student.id,
+                    studentName: student.name,
+                    quizMark: allQuizMarks.reduce((total, quizMark) => quizMark.student_id === student.id ? total += quizMark.mark : total, 0),
+                    assignmentMark: allAssignmentMarks.reduce((total, assignmentMark) => (assignmentMark.student_id === student.id && assignmentMark.status === 'published') ? total += assignmentMark.mark : total, 0)
+                }
+            });
+        } else {
+            leaderboardData = students.map(student => {
+                return {
+                    studentId: student.id,
+                    studentName: student.name,
+                    quizMark: allQuizMarks.reduce((total, quizMark) => quizMark.student_id === student.id ? total += quizMark.mark : total, 0),
+                    assignmentMark: allAssignmentMarks.reduce((total, assignmentMark) => (assignmentMark.student_id === student.id && assignmentMark.status === 'published') ? total += assignmentMark.mark : total, 0)
+                }
+            });
+        }
+
 
         // sorting the leaderboard data here
         const sortedLeaderboardData = leaderboardData.sort((ld1, ld2) => ((ld1.quizMark + ld1.assignmentMark) < (ld2.quizMark + ld2.assignmentMark)) ? 1 : ((ld1.quizMark + ld1.assignmentMark) > (ld2.quizMark + ld2.assignmentMark)) ? -1 : 0);
 
-        const userData = sortedLeaderboardData.find(data => data.studentId === user.id);
-        const userRank = sortedLeaderboardData.findIndex(studentData => studentData.studentId === user.id);
+        // ranking student data here
+        let rank = 1;
+
+        const rankedLeaderboardData = sortedLeaderboardData.map((studentData, index) => {
+            if (index > 0) {
+                if ((sortedLeaderboardData[index - 1].quizMark + sortedLeaderboardData[index - 1].assignmentMark) > (studentData.assignmentMark + studentData.quizMark)) {
+                    rank++;
+                }
+            }
+            return {
+                ...studentData,
+                rank,
+            };
+        }, 1);
+
+        const userData = rankedLeaderboardData.find(data => data.studentId === user.id);
 
         content =
             <>
@@ -90,7 +118,7 @@ const LeaderBoardTable = () => {
 
                         <tbody>
                             <tr className='border-2 border-cyan'>
-                                <td className='table-td text-center font-bold'>{userRank > -1 ? userRank + 1 : sortedLeaderboardData.length + 1}</td>
+                                <td className='table-td text-center font-bold'>{userData.rank}</td>
                                 <td className='table-td text-center font-bold'>{user.name}</td>
                                 <td className='table-td text-center font-bold'>{userData ? userData.quizMark : 0}</td>
                                 <td className='table-td text-center font-bold'>{userData ? userData.assignmentMark : 0}</td>
@@ -115,12 +143,14 @@ const LeaderBoardTable = () => {
 
                         <tbody>
                             {
-                                sortedLeaderboardData.map((studentData, index) => <LeaderBoardTableRow
-                                    key={studentData.studentId}
-                                    rank={index + 1}
-                                    studentData={studentData}
-                                    userId={user.id}
-                                />)
+                                rankedLeaderboardData.map((studentData) => {
+                                    return <LeaderBoardTableRow
+                                        key={studentData.studentId}
+                                        rank={studentData.rank}
+                                        studentData={studentData}
+                                        userId={user.id}
+                                    />
+                                })
                             }
                         </tbody>
                     </table>
