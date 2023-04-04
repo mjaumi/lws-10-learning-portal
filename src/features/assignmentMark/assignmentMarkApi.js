@@ -7,9 +7,9 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
         getAssignmentMark: builder.query({
             query: () => '/assignmentMark',
         }),
-        // GET query to get assignment marks by studentId & assignmentId
-        getAssignmentMarkByStudentAndAssignmentId: builder.query({
-            query: ({ studentId, assignmentId }) => `/assignmentMark?student_id_like=${studentId}&assignment_id_like=${assignmentId}`,
+        // GET query to get assignment marks by studentId
+        getAssignmentMarkByStudentId: builder.query({
+            query: studentId => `/assignmentMark?student_id_like=${studentId}`,
         }),
         // POST mutation to add new assignment mark in the server
         addAssignmentMark: builder.mutation({
@@ -19,11 +19,12 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
                 body: data,
             }),
 
+            // updating redux store assignment marks pessimistically after adding an assignment
             async onQueryStarted(data, { queryFulfilled, dispatch }) {
                 const addedAssignmentMark = await queryFulfilled;
 
                 if (addedAssignmentMark?.data?.id) {
-                    dispatch(apiSlice.util.updateQueryData('getAssignmentMark', undefined,
+                    dispatch(apiSlice.util.updateQueryData('getAssignmentMarkByStudentId', data.student_id,
                         draftAssignmentMark => {
                             draftAssignmentMark.push(addedAssignmentMark.data);
                         }));
@@ -58,7 +59,7 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
 
 export const {
     useGetAssignmentMarkQuery,
-    useLazyGetAssignmentMarkByStudentAndAssignmentIdQuery,
+    useGetAssignmentMarkByStudentIdQuery,
     useAddAssignmentMarkMutation,
     useUpdateAssignmentMarkMutation,
 } = assignmentMarkApi;

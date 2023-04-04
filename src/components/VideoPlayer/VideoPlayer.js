@@ -11,7 +11,6 @@ import { videosApi } from '../../features/videos/videosApi';
 import { resetQuizAnswers } from '../../features/selectQuizAnswer/selectQuizAnswerSlice';
 import useHasStudentSubmittedQuiz from '../../hooks/useHasStudentSubmittedQuiz';
 import AssignmentSubmitModal from '../Modals/AssignmentSubmitModal';
-import useHasStudentSubmittedAssignment from '../../hooks/useHasStudentSubmittedAssignment';
 
 const VideoPlayer = () => {
     // integration of react-redux hooks here
@@ -29,7 +28,7 @@ const VideoPlayer = () => {
 
     // integration of custom hooks here
     const { hasSubmittedQuiz, hasLoaded } = useHasStudentSubmittedQuiz(user.id, videoId);
-    const { hasSubmittedAssignment, hasAssignmentsLoaded } = useHasStudentSubmittedAssignment(user.id, relatedAssignments?.id);
+    // const { hasSubmittedAssignment, hasAssignmentsLoaded } = useHasStudentSubmittedAssignment(user.id, relatedAssignments?.id);
 
     // resetting quiz selected answers in the store when user redirects to this page
     useEffect(() => {
@@ -101,7 +100,7 @@ const VideoPlayer = () => {
 
                 <div className='flex gap-4'>
                     {
-                        (relatedAssignments?.length > 0 && !(hasAssignmentsLoaded && hasSubmittedAssignment)) &&
+                        (relatedAssignments?.length > 0) &&
                         <button onClick={() => setIsModalOpen(true)} className='px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary'>
                             এসাইনমেন্ট জমা দিন
                         </button>
@@ -121,7 +120,7 @@ const VideoPlayer = () => {
             <AssignmentSubmitModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
-                assignment={relatedAssignments?.length && relatedAssignments[0]}
+                assignments={relatedAssignments}
             />
         </div>
     );
