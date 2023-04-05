@@ -144,12 +144,16 @@ const LeaderBoardTable = () => {
                         <tbody>
                             {
                                 rankedLeaderboardData.map((studentData) => {
-                                    return <LeaderBoardTableRow
-                                        key={studentData.studentId}
-                                        rank={studentData.rank}
-                                        studentData={studentData}
-                                        userId={user.id}
-                                    />
+
+                                    if (studentData.rank <= 20) {
+                                        return <LeaderBoardTableRow
+                                            key={studentData.studentId}
+                                            rank={studentData.rank}
+                                            studentData={studentData}
+                                            userId={user.id}
+                                        />
+                                    }
+                                    return null;
                                 })
                             }
                         </tbody>

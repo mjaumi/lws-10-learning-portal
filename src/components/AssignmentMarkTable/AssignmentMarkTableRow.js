@@ -28,13 +28,17 @@ const AssignmentMarkTableRow = ({ assignmentMarkRow }) => {
     const updateFormHandler = e => {
         e.preventDefault();
 
-        updateAssignmentMark({
-            id,
-            data: {
-                mark: Number(assignmentMark),
-                status: 'published',
-            }
-        });
+        if (assignmentMark <= totalMark) {
+            updateAssignmentMark({
+                id,
+                data: {
+                    mark: Number(assignmentMark),
+                    status: 'published',
+                }
+            });
+        } else {
+            toast.warning('Assigned Mark Must Be Less Or Equal To Total Mark!!');
+        }
     }
 
     // rendering assignment mark table row component here
@@ -48,7 +52,7 @@ const AssignmentMarkTableRow = ({ assignmentMarkRow }) => {
                 status === 'pending' ?
                     <td className='table-td input-mark'>
                         <form className='flex items-center' onSubmit={updateFormHandler}>
-                            <input min={0} max={totalMark} value={assignmentMark} onChange={e => setAssignmentMark(e.target.value)} />
+                            <input min={0} max={totalMark} value={assignmentMark} onChange={e => setAssignmentMark(e.target.value)} required />
                             <button type='submit' className='ml-3 disabled:opacity-80 disabled:cursor-not-allowed' disabled={isLoading}>
                                 <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor'
                                     className='w-6 h-6 text-green-500 cursor-pointer hover:text-green-400'>

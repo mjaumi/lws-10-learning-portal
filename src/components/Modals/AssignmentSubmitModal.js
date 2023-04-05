@@ -48,7 +48,7 @@ const AssignmentSubmitModal = ({ isModalOpen, setIsModalOpen, assignments }) => 
             assignment_id: id,
             title,
             createdAt: moment().format('YYYY-MM-DDThh:mm:ss.ms'),
-            totalMark,
+            totalMark: Number(totalMark),
             mark: 0,
             repo_link: repoLink,
             status: 'pending',

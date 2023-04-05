@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import objectsEqual from '../../utils/objectsEqual';
 import { useAddQuizMarkMutation } from '../../features/quizMark/quizMarkApi';
 import { toast } from 'react-toastify';
-import useHasStudentSubmittedQuiz from '../../hooks/useHasStudentSubmittedQuiz';
 
 const QuizSet = () => {
     // integration of react-router-dom hooks here
@@ -21,19 +20,8 @@ const QuizSet = () => {
     const { quizAnswers } = useSelector(state => state.selectedQuizAnswers);
     const { user } = useSelector(state => state.auth);
 
-    // integration of custom hooks here
-    const { hasSubmittedQuiz, hasLoaded } = useHasStudentSubmittedQuiz(user.id, videoId);
-
     // integration of react-router-dom hooks here
     const navigate = useNavigate();
-
-    // redirecting user to the course player page if he/she had already submitted the quiz
-    useEffect(() => {
-        if (hasLoaded && hasSubmittedQuiz) {
-            navigate(`/course-player/${videoId}`);
-            toast.warning('You Have Already Submitted The Quiz');
-        }
-    }, [hasLoaded, hasSubmittedQuiz, videoId, navigate]);
 
     // notifying user based on quiz answer submit success or error 
     useEffect(() => {
@@ -55,8 +43,6 @@ const QuizSet = () => {
     // handler function to submit answers
     const submitAnswersHandler = () => {
         const correctAnswers = quizAnswers.filter(answer => isAnswersCorrect(answer.selectedOptions, quizzes[answer.quizIndex].options));
-
-        console.log(correctAnswers.length * 5);
 
         addQuizMark({
             student_id: user.id,

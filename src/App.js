@@ -16,6 +16,7 @@ import StudentLogin from './pages/student/StudentLogin';
 import StudentRegistration from './pages/student/StudentRegistration';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import QuizRoute from './components/Route/QuizRoute';
 
 function App() {
   // integration of custom hooks here
@@ -53,7 +54,9 @@ function App() {
                 } />
                 <Route path='/quiz/:videoId' element={
                   <PrivateRoute>
-                    <Quiz />
+                    <QuizRoute>
+                      <Quiz />
+                    </QuizRoute>
                   </PrivateRoute>
                 } />
 

@@ -14,7 +14,7 @@ const SelectAssignmentToSubmit = ({ assignment, userAssignments }) => {
 
 
     // checking if user submitted the assignment or not
-    const hasUserSubmittedTheAssignment = userAssignments.reduce((submitted, assignmentData) => {
+    const hasUserSubmittedTheAssignment = userAssignments?.reduce((submitted, assignmentData) => {
         if (assignmentData.assignment_id === id) {
             submitted = true;
         }
