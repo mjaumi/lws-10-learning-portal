@@ -17,13 +17,14 @@ import StudentRegistration from './pages/student/StudentRegistration';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import QuizRoute from './components/Route/QuizRoute';
+import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
   // integration of custom hooks here
   const authChecked = useAuthCheck();
 
   return (
-    <>
+    <HelmetProvider>
       {
         !authChecked ?
           <div>Checking Authentication</div>
@@ -98,7 +99,7 @@ function App() {
             <ToastContainer position='top-center' theme='dark' />
           </>
       }
-    </>
+    </HelmetProvider>
   );
 }
 

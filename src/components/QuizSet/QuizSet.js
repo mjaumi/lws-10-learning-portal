@@ -3,10 +3,11 @@ import QuizQuestion from './QuizQuestion';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetQuizzesByVideoIdQuery } from '../../features/quizzes/quizzesApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import objectsEqual from '../../utils/objectsEqual';
 import { useAddQuizMarkMutation } from '../../features/quizMark/quizMarkApi';
 import { toast } from 'react-toastify';
+import { resetQuizAnswers } from '../../features/selectQuizAnswer/selectQuizAnswerSlice';
 
 const QuizSet = () => {
     // integration of react-router-dom hooks here
@@ -19,6 +20,7 @@ const QuizSet = () => {
     // integration of react-redux hooks here
     const { quizAnswers } = useSelector(state => state.selectedQuizAnswers);
     const { user } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     // integration of react-router-dom hooks here
     const navigate = useNavigate();
@@ -44,17 +46,35 @@ const QuizSet = () => {
     const submitAnswersHandler = () => {
         const correctAnswers = quizAnswers.filter(answer => isAnswersCorrect(answer.selectedOptions, quizzes[answer.quizIndex].options));
 
-        addQuizMark({
-            student_id: user.id,
-            student_name: user.name,
-            video_id: quizzes[0].video_id,
-            video_title: quizzes[0].video_title,
-            totalQuiz: quizzes.length,
-            totalCorrect: correctAnswers.length,
-            totalWrong: quizzes.length - correctAnswers.length,
-            totalMark: quizzes.length * 5,
-            mark: correctAnswers.length * 5,
+        // checking if user has answered all the questions or not
+        const isAllQuestionsAnswered = quizAnswers.map(answer => {
+            const isAnswered = answer.selectedOptions.reduce((isOptionSelected, option) => {
+                if (option.isCorrect) {
+                    isOptionSelected = true;
+                }
+
+                return isOptionSelected;
+            }, false);
+
+            return isAnswered;
         });
+
+        if (!isAllQuestionsAnswered.includes(false)) {
+            addQuizMark({
+                student_id: user.id,
+                student_name: user.name,
+                video_id: quizzes[0].video_id,
+                video_title: quizzes[0].video_title,
+                totalQuiz: quizzes.length,
+                totalCorrect: correctAnswers.length,
+                totalWrong: quizzes.length - correctAnswers.length,
+                totalMark: quizzes.length * 5,
+                mark: correctAnswers.length * 5,
+            });
+            dispatch(resetQuizAnswers());
+        } else {
+            toast.warning('Please Answer All The Questions!!');
+        }
     }
 
     // deciding what to render here

@@ -3,6 +3,7 @@ import AssignmentTable from '../../components/AssignmentTable/AssignmentTable';
 import AssignmentModal from '../../components/Modals/AssignmentModal';
 import { MdAssignmentAdd } from 'react-icons/md';
 import Layout from '../../layouts/Layout';
+import PageTitle from '../../components/UI/PageTitle';
 
 const Assignment = () => {
     // integration of react hooks here
@@ -11,6 +12,7 @@ const Assignment = () => {
     // rendering the assignment page here
     return (
         <Layout>
+            <PageTitle title={'Assignment'} />
             <div className='mx-auto max-w-full px-5 lg:px-20'>
                 <div className='px-3 py-20 bg-opacity-10'>
                     <div className='w-full flex'>
