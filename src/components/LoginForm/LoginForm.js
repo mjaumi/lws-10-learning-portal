@@ -87,13 +87,7 @@ const LoginForm = () => {
             <div className='flex items-center justify-end'>
                 <div className='text-sm'>
                     <Link to={'/registration'} className='font-medium text-violet-600 hover:text-violet-500'>
-
-                        {
-                            !location.pathname.includes('admin') ?
-                                'Create New Account'
-                                :
-                                'Forgot your password?'
-                        }
+                        Create New Account
                     </Link>
                 </div>
             </div>
