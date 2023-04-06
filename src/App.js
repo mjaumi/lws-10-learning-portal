@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import QuizRoute from './components/Route/QuizRoute';
 import { HelmetProvider } from 'react-helmet-async';
+import Loading from './components/UI/Loading';
 
 function App() {
   // integration of custom hooks here
@@ -27,7 +28,9 @@ function App() {
     <HelmetProvider>
       {
         !authChecked ?
-          <div>Checking Authentication</div>
+          <div className='h-screen'>
+            <Loading className={'!h-full items-center !mt-0'} />
+          </div>
           :
           <>
             <Router>

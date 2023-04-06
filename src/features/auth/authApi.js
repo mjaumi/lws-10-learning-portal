@@ -13,19 +13,21 @@ export const authApi = apiSlice.injectEndpoints({
             }),
 
             // storing user credentials to store and local storage after log in completed
-            async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            async onQueryStarted(data, { queryFulfilled, dispatch }) {
                 try {
                     const result = await queryFulfilled;
 
-                    localStorage.setItem('learningPortalAuth', JSON.stringify({
-                        accessToken: result.data.accessToken,
-                        user: result.data.user,
-                    }));
+                    if (data.path === result.data.user.role) {
+                        localStorage.setItem('learningPortalAuth', JSON.stringify({
+                            accessToken: result.data.accessToken,
+                            user: result.data.user,
+                        }));
 
-                    dispatch(userLoggedIn({
-                        accessToken: result.data.accessToken,
-                        user: result.data.user,
-                    }));
+                        dispatch(userLoggedIn({
+                            accessToken: result.data.accessToken,
+                            user: result.data.user,
+                        }));
+                    }
 
                 } catch (error) {
 

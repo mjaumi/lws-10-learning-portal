@@ -33,8 +33,8 @@ const LoginForm = () => {
                     navigate('/admin/dashboard');
                 } else {
                     toast.error('Wrong Admin Credentials!!');
-                    dispatch(userLoggedOut());
                     localStorage.clear();
+                    dispatch(userLoggedOut());
                 }
             } else {
                 if (data.user.role === 'student') {
@@ -45,8 +45,8 @@ const LoginForm = () => {
                     }
                 } else {
                     toast.error('Wrong Student Credentials!!');
-                    dispatch(userLoggedOut());
                     localStorage.clear();
+                    dispatch(userLoggedOut());
                 }
             }
         }
@@ -63,6 +63,7 @@ const LoginForm = () => {
         login({
             email,
             password,
+            path: location.pathname.includes('admin') ? 'admin' : 'student',
         });
     }
 
