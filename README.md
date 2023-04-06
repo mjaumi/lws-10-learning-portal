@@ -6,7 +6,7 @@ Live Preview Link (Admin Wing): [https://lws-learning-portal-mjaumi.netlify.app/
 
 ## Description
 
-This is a miniature version of [Learn With Sumit](https://learnwithsumit.com) website. Here we have two wings **Admin & Student**
+This is a miniature version of [Learn With Sumit](https://learnwithsumit.com) website made with React, Redux, React-Redux, Redux-Toolkit & RTK Query. Here we have two wings **Admin & Student**
 
 ### Student Features
 
