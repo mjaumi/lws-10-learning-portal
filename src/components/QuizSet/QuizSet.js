@@ -111,8 +111,8 @@ const QuizSet = () => {
                     }
                 </div>
 
-                <button onClick={submitAnswersHandler} className='btn btn-sm btn-secondary border-2 border-secondary px-6 rounded-full text-black font-medium ml-auto hover:bg-primary hover:text-white duration-300 flex items-center capitalize mt-8' disabled={isSubmitLoading}>
-                    <AiOutlineFileDone className='mr-2' />
+                <button onClick={submitAnswersHandler} className='btn btn-sm btn-secondary border-2 border-secondary px-6 rounded-full text-black font-medium ml-auto hover:bg-primary hover:text-white duration-300 flex items-center capitalize mt-8 disabled:loading' disabled={isSubmitLoading}>
+                    <AiOutlineFileDone className={`mr-2 ${isSubmitLoading ? 'hidden' : 'block'}`} />
                     Submit Answers
                 </button>
             </>;

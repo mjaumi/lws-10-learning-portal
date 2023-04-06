@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BsFillCloudUploadFill } from 'react-icons/bs';
+import { MdAssignmentTurnedIn } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { toast } from 'react-toastify';
@@ -97,8 +97,8 @@ const AssignmentSubmitModal = ({ isModalOpen, setIsModalOpen, assignments }) => 
                                         <input type='text' placeholder='Github Repository Link Here...' className='input input-bordered w-full bg-neutral' required value={repoLink} onChange={e => setRepoLink(e.target.value)} />
                                     </div>
                                     <div className='modal-action justify-center'>
-                                        <button type='submit' className='btn btn-sm btn-secondary border-2 border-secondary hover:bg-transparent hover:text-white rounded-full capitalize px-5 disabled:opacity-80 disabled:cursor-not-allowed' disabled={isLoading}>
-                                            <BsFillCloudUploadFill className='mr-2' />
+                                        <button type='submit' className='btn btn-sm btn-secondary border-2 border-secondary hover:bg-transparent hover:text-white rounded-full capitalize px-5 disabled:opacity-80 disabled:cursor-not-allowed disabled:loading' disabled={isLoading}>
+                                            <MdAssignmentTurnedIn className={`mr-2 ${isLoading ? 'hidden' : 'block'}`} />
                                             Submit Assignment
                                         </button>
                                     </div>

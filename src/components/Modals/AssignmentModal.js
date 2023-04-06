@@ -153,8 +153,8 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
                                 <ImCancelCircle className='mr-2' />
                                 Cancel
                             </button>
-                            <button type='submit' className='btn btn-sm btn-secondary border-2 border-secondary hover:bg-transparent hover:text-white rounded-full capitalize w-28 px-5 disabled:opacity-80 disabled:cursor-not-allowed' disabled={isLoading || isEditLoading}>
-                                <BsFillCloudUploadFill className='mr-2' />
+                            <button type='submit' className='btn btn-sm btn-secondary border-2 border-secondary hover:bg-transparent hover:text-white rounded-full capitalize w-28 px-5 disabled:opacity-80 disabled:cursor-not-allowed disabled:loading' disabled={isLoading || isEditLoading}>
+                                <BsFillCloudUploadFill className={`mr-2 ${(isLoading || isEditLoading) ? 'hidden' : 'block'}`} />
                                 Save
                             </button>
                         </div>
