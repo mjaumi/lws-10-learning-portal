@@ -1,6 +1,8 @@
 import React from 'react';
 import VideoPlaylistItem from './VideoPlaylistItem';
 import { useGetVideosQuery } from '../../features/videos/videosApi';
+import Loading from '../UI/Loading';
+import Error from '../UI/Error';
 
 const VideoPlaylist = () => {
     // integration of RTK Query hooks here
@@ -10,15 +12,15 @@ const VideoPlaylist = () => {
     let content = null;
 
     if (isLoading) {
-        content = <p>Loading...</p>;
+        content = <Loading />;
     }
 
     if (!isLoading && isError) {
-        content = <p>Error...</p>;
+        content = <Error error={'Failed To Load The Videos!!'} />;
     }
 
     if (!isLoading && !isError && !videos.length) {
-        content = <p>No Videos Found</p>;
+        content = <Error error={'No Videos Found!!'} />;
     }
 
     if (!isLoading && !isError && videos.length) {

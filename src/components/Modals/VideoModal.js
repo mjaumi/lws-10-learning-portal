@@ -51,18 +51,6 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
         }
     }, [isSuccess, isError, setIsModalOpen]);
 
-    // informing and navigating user based on video edit success or error here
-    useEffect(() => {
-        if (isEditSuccess) {
-            toast.success('Video Edited Successfully!!');
-            setIsModalOpen(false);
-        }
-
-        if (isEditError) {
-            toast.error('Failed To Edit The Video!!');
-        }
-    }, [isEditSuccess, isEditError, setIsModalOpen]);
-
     // this function is resetting the form
     const resetForm = () => {
         setTitle('');
@@ -71,6 +59,19 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
         setViews('');
         setDescription('');
     }
+
+    // informing and navigating user based on video edit success or error here
+    useEffect(() => {
+        if (isEditSuccess) {
+            toast.success('Video Edited Successfully!!');
+            setIsModalOpen(false);
+            resetForm();
+        }
+
+        if (isEditError) {
+            toast.error('Failed To Edit The Video!!');
+        }
+    }, [isEditSuccess, isEditError, setIsModalOpen]);
 
     // handler function to handle video form submission
     const videoFormHandler = e => {
@@ -107,8 +108,8 @@ const VideoModal = ({ isModalOpen, setIsModalOpen }) => {
 
         if (videoToEdit?.id) {
             dispatch(removeDataFromEdit());
-            resetForm();
         }
+        resetForm();
     }
 
     // rendering video modal component here

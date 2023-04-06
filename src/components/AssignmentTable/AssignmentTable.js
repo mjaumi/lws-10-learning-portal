@@ -1,6 +1,9 @@
 import React from 'react';
 import { useGetAssignmentsQuery } from '../../features/assignments/assignmentsApi';
 import AssignmentTableRow from './AssignmentTableRow';
+import Loading from '../UI/Loading';
+import Error from '../UI/Error';
+import Warning from '../UI/Warning';
 
 const AssignmentTable = () => {
     // integration of RTK Query hooks here
@@ -10,15 +13,15 @@ const AssignmentTable = () => {
     let content = null;
 
     if (isLoading) {
-        content = <p>Loading...</p>;
+        content = <Loading />;
     }
 
     if (!isLoading && isError) {
-        content = <p>Error...</p>;
+        content = <Error error={'Failed To Load The Assignments!!'} />;
     }
 
     if (!isLoading && !isError && !assignments.length) {
-        content = <p>No Videos Found!!</p>;
+        content = <Warning warning={'No Assignments Found!! But You Can Add Some.'} />;
     }
 
     if (!isLoading && !isError && assignments.length) {

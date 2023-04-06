@@ -8,6 +8,8 @@ import objectsEqual from '../../utils/objectsEqual';
 import { useAddQuizMarkMutation } from '../../features/quizMark/quizMarkApi';
 import { toast } from 'react-toastify';
 import { resetQuizAnswers } from '../../features/selectQuizAnswer/selectQuizAnswerSlice';
+import Loading from '../UI/Loading';
+import Error from '../UI/Error';
 
 const QuizSet = () => {
     // integration of react-router-dom hooks here
@@ -81,15 +83,15 @@ const QuizSet = () => {
     let content = null;
 
     if (isLoading) {
-        content = <p>Loading...</p>;
+        content = <Loading />;
     }
 
     if (!isLoading && isError) {
-        content = <p>Error...</p>;
+        content = <Error error={'Failed To Load The Quizzes!!'} />;
     }
 
     if (!isLoading && !isError && !quizzes.length) {
-        content = <p>No Quiz Found!!</p>;
+        content = <Error error={'No Quiz Found!!'} />;
     }
 
     if (!isLoading && !isError && quizzes.length) {

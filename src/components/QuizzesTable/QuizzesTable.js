@@ -1,6 +1,9 @@
 import React from 'react';
 import { useGetQuizzesQuery } from '../../features/quizzes/quizzesApi';
 import QuizzesTableRow from './QuizzesTableRow';
+import Loading from '../UI/Loading';
+import Error from '../UI/Error';
+import Warning from '../UI/Warning';
 
 const QuizzesTable = () => {
     // initializing RTK Query hook here
@@ -10,15 +13,15 @@ const QuizzesTable = () => {
     let content = null;
 
     if (isLoading) {
-        content = <p>Loading...</p>;
+        content = <Loading />;
     }
 
     if (!isLoading && isError) {
-        content = <p>Error...</p>;
+        content = <Error error={'Failed To Load The Quizzes!!'} />;
     }
 
     if (!isLoading && !isError && !quizzes.length) {
-        content = <p>No Quiz Found!!</p>;
+        content = <Warning warning={'No Quiz Found!! But You Can Add Some.'} />;
     }
 
     if (!isLoading && !isError && quizzes.length) {

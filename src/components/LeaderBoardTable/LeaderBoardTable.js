@@ -4,6 +4,9 @@ import { useGetQuizMarksQuery } from '../../features/quizMark/quizMarkApi';
 import { useSelector } from 'react-redux';
 import LeaderBoardTableRow from './LeaderBoardTableRow';
 import { useGetStudentsQuery } from '../../features/users/usersApi';
+import Loading from '../UI/Loading';
+import Error from '../UI/Error';
+import Warning from '../UI/Warning';
 
 const LeaderBoardTable = () => {
     // integration of RTK Query hooks here
@@ -31,18 +34,18 @@ const LeaderBoardTable = () => {
     let content = null;
 
     if (isLoading || isQuizLoading || isStudentLoading) {
-        content = <p>Loading...</p>;
+        content = <Loading />;
     }
 
     if (!(isLoading && isQuizLoading && isStudentLoading)
         && (isError || isQuizError || isStudentError)) {
-        content = <p>Error...</p>;
+        content = <Error error={'Failed To Load The Leaderboard!!'} />;
     }
 
     if (!(isLoading && isQuizLoading && isStudentLoading)
         && !(isError && isQuizError && isStudentError)
         && !(allAssignmentMarks?.length && allQuizMarks?.length && students?.length)) {
-        content = <p>No Data Found!!</p>;
+        content = <Warning warning={'Leaderboard Not Published Yet!!'} />;
     }
 
     if (!(isLoading || isQuizLoading) && !(isError || isQuizError)

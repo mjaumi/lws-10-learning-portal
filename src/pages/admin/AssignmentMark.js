@@ -3,6 +3,9 @@ import AssignmentMarkTable from '../../components/AssignmentMarkTable/Assignment
 import { useGetAssignmentMarkQuery } from '../../features/assignmentMark/assignmentMarkApi';
 import Layout from '../../layouts/Layout';
 import PageTitle from '../../components/UI/PageTitle';
+import Loading from '../../components/UI/Loading';
+import Error from '../../components/UI/Error';
+import Warning from '../../components/UI/Warning';
 
 const AssignmentMark = () => {
     // integration of RTK Query hooks here
@@ -12,15 +15,15 @@ const AssignmentMark = () => {
     let content = null;
 
     if (isLoading) {
-        content = <p>Loading...</p>;
+        content = <Loading />;
     }
 
     if (!isLoading && isError) {
-        content = <p>Error...</p>;
+        content = <Error error={'Failed To Load The Submitted Assignments!!'} />;
     }
 
     if (!isLoading && !isError && !assignmentMark.length) {
-        content = <p>No Assignments To Show!!</p>;
+        content = <Warning warning={'No Assignments Submitted Yet!!'} />;
     }
 
     if (!isLoading && !isError && assignmentMark.length) {
