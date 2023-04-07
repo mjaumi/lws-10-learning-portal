@@ -1,14 +1,15 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { useUpdateAssignmentMarkMutation } from '../../features/assignmentMark/assignmentMarkApi';
+
 import { toast } from 'react-toastify';
+import { useEditAssignmentMarkMutation } from '../../features/assignmentMark/assignmentMarkApi';
 
 const AssignmentMarkTableRow = ({ assignmentMarkRow }) => {
     // destructuring the assignment mark row component here
     const { id, title, createdAt, student_name, repo_link, status, mark, totalMark } = assignmentMarkRow || {};
 
     // integration or RTK Query hooks here
-    const [updateAssignmentMark, { isSuccess, isError, isLoading }] = useUpdateAssignmentMarkMutation();
+    const [updateAssignmentMark, { isSuccess, isError, isLoading }] = useEditAssignmentMarkMutation();
 
     // integration of react hooks here
     const [assignmentMark, setAssignmentMark] = useState(mark);

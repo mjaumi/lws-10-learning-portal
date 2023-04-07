@@ -78,7 +78,7 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
                     title,
                     video_id: videos.find(video => video.title === videoTitle).id,
                     video_title: videoTitle,
-                    totalMark,
+                    totalMark: Number(totalMark),
                 }
             });
             dispatch(removeDataFromEdit());
@@ -87,7 +87,7 @@ const AssignmentModal = ({ isModalOpen, setIsModalOpen }) => {
                 title,
                 video_id: videos.find(video => video.title === videoTitle).id,
                 video_title: videoTitle,
-                totalMark,
+                totalMark: Number(totalMark),
             });
         }
 

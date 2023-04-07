@@ -1,4 +1,5 @@
 import { apiSlice } from '../api/apiSlice';
+import { assignmentMarkApi } from '../assignmentMark/assignmentMarkApi';
 import { getDataToEdit } from '../edit/editSlice';
 
 // initializing the assignments APIs here
@@ -77,7 +78,9 @@ export const assignmentsApi = apiSlice.injectEndpoints({
             }),
 
             // updating assignments on redux store pessimistically after editing an assignment
-            async onQueryStarted({ assignmentId }, { queryFulfilled, dispatch }) {
+            async onQueryStarted({ assignmentId }, { queryFulfilled, dispatch, getState }) {
+                const prevAssignment = getState().learningPortalAPI.queries[`getAssignment(${assignmentId})`]?.data;
+
                 const editedAssignment = await queryFulfilled;
 
                 if (editedAssignment?.data?.id) {
@@ -88,6 +91,27 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                             draftAssignments.splice(editedAssignmentIndex, 1, editedAssignment.data);
                         })
                     );
+
+                    if (prevAssignment.totalMark !== editedAssignment.data.totalMark || prevAssignment.title !== editedAssignment.data.title) {
+                        console.log('NOT EQUAL');
+
+                        let submittedAssignments = [];
+
+                        await dispatch(assignmentMarkApi.endpoints.getAssignmentMarkByAssignmentId.initiate(assignmentId))
+                            .unwrap()
+                            .then(data => submittedAssignments = [...data])
+                            .catch();
+
+                        submittedAssignments.map(submittedAssignment => dispatch(
+                            assignmentMarkApi.endpoints.editAssignmentMark.initiate({
+                                id: submittedAssignment.id,
+                                data: {
+                                    title: editedAssignment.data.title,
+                                    totalMark: Number(editedAssignment.data.totalMark),
+                                }
+                            })
+                        ));
+                    }
                 }
             }
         })
