@@ -9,6 +9,7 @@ const useAuthCheck = () => {
 
     // integration or react hooks here
     const [authChecked, setAuthChecked] = useState(false);
+    const [user, setUser] = useState(undefined);
 
     useEffect(() => {
         const localAuth = localStorage?.getItem('learningPortalAuth');
@@ -21,13 +22,16 @@ const useAuthCheck = () => {
                     accessToken: auth.accessToken,
                     user: auth.user,
                 }));
+                setUser(auth.user);
             }
-
         }
         setAuthChecked(true);
     }, [dispatch]);
 
-    return authChecked;
+    return {
+        authChecked,
+        userRole: user?.role,
+    };
 }
 
 export default useAuthCheck;

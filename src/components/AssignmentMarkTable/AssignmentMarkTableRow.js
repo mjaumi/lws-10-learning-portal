@@ -16,7 +16,7 @@ const AssignmentMarkTableRow = ({ assignmentMarkRow }) => {
     // informing and navigating user based on video delete success or error here
     useEffect(() => {
         if (isSuccess) {
-            toast.success('Assignment Mark Updated Successfully!!.');
+            toast.success('Assignment Mark Updated Successfully!!');
         }
 
         if (isError) {

@@ -19,10 +19,11 @@ import { ToastContainer } from 'react-toastify';
 import QuizRoute from './components/Route/QuizRoute';
 import { HelmetProvider } from 'react-helmet-async';
 import Loading from './components/UI/Loading';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   // integration of custom hooks here
-  const authChecked = useAuthCheck();
+  const { authChecked } = useAuthCheck();
 
   return (
     <HelmetProvider>
@@ -36,33 +37,36 @@ function App() {
             <Router>
               <Routes>
                 {/* student routes */}
-                < Route path='/' element={
-                  <PublicRoute>
-                    <StudentLogin />
-                  </PublicRoute>
-                } />
-                <Route path='/registration' element={
-                  <PublicRoute>
-                    <StudentRegistration />
-                  </PublicRoute>
-                } />
-                <Route path='/leader-board' element={
-                  <PrivateRoute>
-                    <LeaderBoard />
-                  </PrivateRoute>
-                } />
-                <Route path='/course-player/:videoId' element={
-                  <PrivateRoute>
-                    <CoursePlayer />
-                  </PrivateRoute>
-                } />
-                <Route path='/quiz/:videoId' element={
-                  <PrivateRoute>
-                    <QuizRoute>
-                      <Quiz />
-                    </QuizRoute>
-                  </PrivateRoute>
-                } />
+
+                <>
+                  < Route path='/' element={
+                    <PublicRoute>
+                      <StudentLogin />
+                    </PublicRoute>
+                  } />
+                  <Route path='/registration' element={
+                    <PublicRoute>
+                      <StudentRegistration />
+                    </PublicRoute>
+                  } />
+                  <Route path='/leader-board' element={
+                    <PrivateRoute>
+                      <LeaderBoard />
+                    </PrivateRoute>
+                  } />
+                  <Route path='/course-player/:videoId' element={
+                    <PrivateRoute>
+                      <CoursePlayer />
+                    </PrivateRoute>
+                  } />
+                  <Route path='/quiz/:videoId' element={
+                    <PrivateRoute>
+                      <QuizRoute>
+                        <Quiz />
+                      </QuizRoute>
+                    </PrivateRoute>
+                  } />
+                </>
 
                 {/* admin routes */}
                 <Route path='/admin'>
@@ -97,6 +101,7 @@ function App() {
                     </PrivateRoute>
                   } />
                 </Route>
+                <Route path='*' element={<NotFound />} />
               </Routes>
             </Router>
             <ToastContainer position='top-center' theme='dark' />
