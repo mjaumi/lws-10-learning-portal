@@ -92,8 +92,8 @@ export const assignmentsApi = apiSlice.injectEndpoints({
                         })
                     );
 
+                    // editing assignment mark when assignment is updated
                     if (prevAssignment.totalMark !== editedAssignment.data.totalMark || prevAssignment.title !== editedAssignment.data.title) {
-                        console.log('NOT EQUAL');
 
                         let submittedAssignments = [];
 
