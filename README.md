@@ -8,6 +8,18 @@ Live Preview Link (Admin Wing): [https://lws-learning-portal-mjaumi.netlify.app/
 
 This is a miniature version of [Learn With Sumit](https://learnwithsumit.com) website made with React, Redux, React-Redux, Redux-Toolkit & RTK Query. Here we have two wings **Admin & Student**
 
+### Credentials
+
+**Student:**
+
+- Email: rafsan@learnwithsumit.com
+- Password: 123456
+
+**Admin:**
+
+- Email: admin@learnwithsumit.com
+- Password: lws@123456
+
 ### Student Features
 
 - Students can register into the website.

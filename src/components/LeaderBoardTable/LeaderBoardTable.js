@@ -121,7 +121,7 @@ const LeaderBoardTable = () => {
 
                         <tbody>
                             <tr className='border-2 border-cyan'>
-                                <td className='table-td text-center font-bold'>{userData.rank}</td>
+                                <td className='table-td text-center font-bold'>{userData?.rank}</td>
                                 <td className='table-td text-center font-bold'>{user.name}</td>
                                 <td className='table-td text-center font-bold'>{userData ? userData.quizMark : 0}</td>
                                 <td className='table-td text-center font-bold'>{userData ? userData.assignmentMark : 0}</td>
@@ -148,7 +148,7 @@ const LeaderBoardTable = () => {
                             {
                                 rankedLeaderboardData.map((studentData) => {
 
-                                    if (studentData.rank <= 20) {
+                                    if (studentData?.rank <= 20) {
                                         return <LeaderBoardTableRow
                                             key={studentData.studentId}
                                             rank={studentData.rank}
