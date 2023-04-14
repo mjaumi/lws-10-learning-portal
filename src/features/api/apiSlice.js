@@ -3,7 +3,7 @@ import { userLoggedOut } from '../auth/authSlice';
 
 // creating the base query with headers here
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'https://learning-portal-8v8a.onrender.com',
+    baseUrl: process.env.REACT_APP_BASE_URL,
     prepareHeaders: async (headers, { getState }) => {
         const token = getState()?.auth?.accessToken;
 

@@ -16,6 +16,7 @@ const LoginForm = () => {
     // integration or react hooks here
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isStudentLoggedIn, setIsStudentLoggedIn] = useState(false);
 
     // integration of react-router-dom hooks here
     const location = useLocation();
@@ -40,9 +41,7 @@ const LoginForm = () => {
                 if (data.user.role === 'student') {
                     toast.success(`Logged In Successfully!! Welcome, ${data.user.name}`);
 
-                    if (isFirstVideoFetched) {
-                        navigate(`/course-player/${videoId}`);
-                    }
+                    setIsStudentLoggedIn(true);
                 } else {
                     toast.error('Wrong Student Credentials!!');
                     localStorage.clear();
@@ -55,6 +54,13 @@ const LoginForm = () => {
             toast.error('Incorrect Email Or Password!!');
         }
     }, [data, dispatch, isError, navigate, location, videoId, isFirstVideoFetched]);
+
+    // navigating user to course player page if user is a student
+    useEffect(() => {
+        if (isStudentLoggedIn && isFirstVideoFetched) {
+            navigate(`/course-player/${videoId}`);
+        }
+    }, [isStudentLoggedIn, isFirstVideoFetched, videoId, navigate]);
 
     // handler function to handle login
     const loginHandler = e => {
